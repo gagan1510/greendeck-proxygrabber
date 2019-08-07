@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: greendeck-helloworld
+Version: 0.0.2
+Summary: Greendeck Hello World package
+Home-page: https://github.com/pypa/sampleproject
+Author: chandan mishra
+Author-email: chandan.mishra@greendeck.com
+License: UNKNOWN
+Description: try it
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown

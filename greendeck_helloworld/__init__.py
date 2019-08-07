@@ -7,3 +7,5 @@ author = "Example Author"
 author_email = "author@example.com"
 url = ""
 
+# import sub packages
+from .src.elasticsearch.elasticsearch import ElasticSearch

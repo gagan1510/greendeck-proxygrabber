@@ -1,2 +1,7 @@
 .idea/
 .idea
+build/
+dist/
+*egg-info
+build
+dist

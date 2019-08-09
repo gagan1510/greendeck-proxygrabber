@@ -4,11 +4,11 @@ import setuptools
 #     long_description = fh.read()
 
 setuptools.setup(
-    name="greendeck-helloworld",
+    name="gd-proxygrabber",
     version="0.0.2",
-    author="chandan mishra",
-    author_email="chandan.mishra@greendeck.com",
-    description="Greendeck Hello World package",
+    author="gagan singh",
+    author_email="gaganpreet.gs007@gmail.com",
+    description="Greendeck Proxy Grabber Package",
     long_description="try it",
     long_description_content_type="text/markdown",
     url="https://github.com/pypa/sampleproject",

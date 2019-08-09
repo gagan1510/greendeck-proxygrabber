@@ -8,4 +8,4 @@ author_email = "author@example.com"
 url = ""
 
 # import sub packages
-from .src.elasticsearch.elasticsearch import ElasticSearch
+from src.proxygrabber import ProxyGrabberClass

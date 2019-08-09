@@ -71,7 +71,7 @@ class ProxyChecker:
             else:
                 print('Not a valid list of proxies')
 
-            pool = ThreadPool(50)
+            pool = ThreadPool(75)
             final_proxy_list_http = pool.map(ProxyChecker.get_external_ip, proxy_tuple_list_to_check)
             # final_proxy_list_http = pool.map(ProxyChecker.check_ip, proxy_tuple_list_to_check)
             pool.close()
@@ -97,7 +97,7 @@ class ProxyChecker:
             else:
                 print('Not a valid list of proxies')
 
-            pool = ThreadPool(50)
+            pool = ThreadPool(75)
             final_proxy_list_https = pool.map(ProxyChecker.get_external_ip, proxy_tuple_list_to_check)
             # final_proxy_list_https = pool.map(ProxyChecker.check_ip, proxy_tuple_list_to_check)
             pool.close()

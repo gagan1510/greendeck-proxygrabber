@@ -11,7 +11,7 @@ def change_proxies(proxy_list, country_code):
         country_code: proxy_list
     }
     
-    with open('proxy_{}.json'.format(country_code), 'r') as f: 
+    with open('proxy_{}.json'.format(country_code), 'w') as f: 
         f.write(json.dumps(proxy_dict))
     
     print('DUMPED!')

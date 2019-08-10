@@ -1,7 +1,7 @@
 GD-HELLOWORLD
 ---
 
-*This package is developed by [Greendeck](https://greendeck.co)*
+*This package is developed by [Greendeck](https://www.greendeck.co/)*
 ### Install from pip
 https://pypi.org/project/greendeck-proxy/
 

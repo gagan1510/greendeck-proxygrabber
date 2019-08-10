@@ -11,7 +11,7 @@ setuptools.setup(
     description="Greendeck Proxy Grabber Package",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
+    url="https://gitlab.com/greendeck-libraries/gd-proxy-grabber/tree/proxy_grabber",
     packages=['greendeck_proxy', 'greendeck_proxy.src', 'greendeck_proxy.src.proxygrabber'],
     classifiers=[
         "Programming Language :: Python :: 3",

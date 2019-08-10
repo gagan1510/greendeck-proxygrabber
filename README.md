@@ -5,22 +5,22 @@ greendeck-proxygrabber
 ### Install from pip
 https://pypi.org/project/greendeck-proxy/
 
-```pip install greendeck_proxy```
+```pip install greendeck-proxygrabber```
 
 ### How to use ?
 ##### import the library
 ```python
-import greendeck_proxy
+import greendeck_proxygrabber
 ```
 
-##### import ```ProxyGrabberClass``` class
+##### import ```ProxyGrabber``` class
 ```python
-from greendeck_proxy import ProxyGrabberClass
+from greendeck_proxygrabber import ProxyGrabber
 ```
 
-##### initialize ```ProxyGrabberClass``` object
+##### initialize ```ProxyGrabber``` object
 ```python
-grabber = ProxyGrabberClass()
+grabber = ProxyGrabber(country_code, len_proxy_list, timeout)
 ```
 Here default values of some arguments are,
 ```
@@ -39,7 +39,7 @@ grabber.grab_proxy()
 The grab_proxy ```grab_proxy()``` function helps to fetch the proxies.
 This returns a list of 200 proxies of both type http and https.
 ```python
-from greendeck_proxy import proxy_scraper
+from greendeck_proxygrabber import proxy_scraper
 proxies_http, proxies_https = proxy_scraper()
 ```
 ##### Filtering invalid proxies from a list of proxies
@@ -47,7 +47,7 @@ The ```proxy_checker_https``` and ```proxy_checker_http``` methods from ```Proxy
 Given a list of proxies, it checks each of them to be valid or not, and returns a list of valid proxies from the proxies feeded to it.
 
 ```python
-from greendeck_proxy import ProxyChecker
+from greendeck_proxygrabber import ProxyChecker
 valid_proxies_http = ProxyChecker.proxy_checker_http(proxy_list = proxy_list_http, timeout = 2)
 valid_proxies_https = ProxyChecker.proxy_checker_https(proxy_list = proxy_list_https, timeout = 2)
 ```

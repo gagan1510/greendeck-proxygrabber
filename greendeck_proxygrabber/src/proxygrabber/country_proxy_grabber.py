@@ -1,7 +1,7 @@
 import json
 import requests
 from lxml.html import fromstring
-from .utils import constant
+from . import constant
 
 scraped_http_length = 0
 scraped_https_length = 0

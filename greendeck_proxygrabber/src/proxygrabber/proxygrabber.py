@@ -10,7 +10,7 @@ from .proxychecker import ProxyChecker
 from .country_proxy_grabber import proxy_scraper
 import sys
 
-class ProxyGrabberClass():
+class ProxyGrabber():
     proxy_list=[]
 
     def __init__(

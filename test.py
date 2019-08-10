@@ -1,7 +1,7 @@
 import json
 import requests
 import sys
-from greendeck_proxygrabber.src.proxygrabber.proxygrabber import ProxyGrabberClass
+from greendeck_proxygrabber.src.proxygrabber.proxygrabber import ProxyGrabber
 from greendeck_proxygrabber.src.proxygrabber.proxychecker import ProxyChecker
 from greendeck_proxygrabber.src.proxygrabber.country_proxy_grabber import proxy_scraper
 
@@ -13,7 +13,7 @@ def test_proxy_scraper():
 
 def test_proxy_grabber():
     global proxies
-    proxy = ProxyGrabberClass(len_proxy_list= 1)
+    proxy = ProxyGrabber(len_proxy_list= 1)
     proxies = proxy.grab_proxy()
     assert len(proxies['http']) == len(proxies['https']) == 1
 

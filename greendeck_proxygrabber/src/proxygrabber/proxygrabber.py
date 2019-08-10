@@ -6,20 +6,18 @@ import lxml
 import requests
 from lxml import html
 from lxml.html import fromstring
-from proxychecker import ProxyChecker
-from country_proxy_grabber import proxy_scraper
+from .proxychecker import ProxyChecker
+from .country_proxy_grabber import proxy_scraper
 import sys
-from utils import save_proxy
 
-class ProxyGraberClass():
-
+class ProxyGrabberClass():
     proxy_list=[]
 
     def __init__(
         self, 
         len_proxy_list = 10, 
         country_code = 'ALL', 
-        timeout = 10, 
+        timeout = 2, 
         to_json = True,
         update_time = 120
         ):
@@ -31,11 +29,12 @@ class ProxyGraberClass():
         self.update_time = update_time
 
 
-    def grab_proxy_list(self):
+    def _grab_proxy_list(self):
 
         final_proxies = {
             'http': set(),
-            'https': set()
+            'https': set(),
+            'region' : 'ALL'
         }
         total_http_checked = 0
         total_https_checked = 0
@@ -54,9 +53,13 @@ class ProxyGraberClass():
 
             total_http_checked += len(scraped_proxies_http)
             total_https_checked += len(scraped_proxies_https)
-
-            checked_https = ProxyChecker.proxy_checker_https(scraped_proxies_https, self.timeout)
-            checked_http = ProxyChecker.proxy_checker_http(scraped_proxies_http, self.timeout)
+            
+            if len(scraped_proxies_http) or len(scraped_proxies_https):
+                checked_http = ProxyChecker.proxy_checker_http(scraped_proxies_http, self.timeout)
+                checked_https = ProxyChecker.proxy_checker_https(scraped_proxies_https, self.timeout)
+            else:
+                print('Maximum possible IPs fetched!')
+                break
 
             if len(final_proxies['http']) < self.len_proxy_list:
                 for proxy in checked_http:
@@ -76,29 +79,13 @@ class ProxyGraberClass():
             remaining_len_http = max(remaining_len_http, 0)
             remaining_len_https = max(remaining_len_https, 0)
         
-            # self.proxy_list['http'].append(final_proxies[])
         final_proxies['https'] = list(final_proxies['https'])
         final_proxies['http'] = list(final_proxies['http'])
-        
-        
+        final_proxies['region'] = self.country_code
         return final_proxies
 
-
-    def start_proxy_service(self):
-        while True:
-            print('Starting thread')
-            start = time.time()
-            final_proxies = self.grab_proxy_list()
-            end = time.time()
-            save_proxy.change_proxies(country_code= self.country_code, proxy_list= final_proxies)
-            time.sleep(max(self.update_time - (start - end), 0))
-
     def grab_proxy(self):
-        start = time.time()
-        proxies = self.grab_proxy_list()
-        end = time.time()
-        print("TIME TAKEN:")
-        print(end-start)
+        proxies = self._grab_proxy_list()
         return proxies
 
 # ============================================================================================ #

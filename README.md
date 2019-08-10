@@ -1,40 +1,56 @@
 GD-HELLOWORLD
 ---
 
-*This package is sn standard example of how to make your own pip package. You can list your ElasticSearch indices.*
+*This package is developed by Greendeck[https://greendeck.co]*
 ### Install from pip
-https://pypi.org/project/greendeck-helloworld/
+https://pypi.org/project/greendeck-proxy/
 
-```pip install greendeck_helloworld```
-
+```pip install greendeck_proxy```
 
 ### How to use ?
 ##### import the library
 ```python
-import greendeck_helloworld
+import greendeck_proxy
 ```
 
-##### import ```ElasticSearch``` class
+##### import ```ProxyGrabberClass``` class
 ```python
-from greendeck_helloworld import ElasticSearch
+from greendeck_proxy import ProxyGrabberClass
 ```
 
-##### initialize ```ElasticSearch``` client connection
+##### initialize ```ProxyGrabberClass``` object
 ```python
-es_client = ElasticSearch(ECS_HOST = <YOUR_ECS_HOST_NAME>, ECS_INDEX_PATTERN = <YOUR_ECS_INDEX_PATTERN>, username=<YOUR_ECS_USERNSME>,password=<YOUR_ECS_PASSWORD>)
+grabber = ProxyGrabberClass()
 ```
 Here default values of some arguments are,
-* ECS_INDEX_PATTERN = "*"
-* usename = Null
-* password = Null
-
-##### List all of your ECS indices
-```python
-es_client.list_indices()
 ```
+* len_proxy_list = 10 
+* country_code = 'ALL'
+* timeout = 2
+```
+Currently the program only supports proxies of combined regions
 
+##### Getting checked, running proxies
+The grab_proxy ```grab_proxy()``` function helps to fetch the proxies.
+```python
+grabber.grab_proxy()
+```
+##### Getting an unchecked list of proxies
+The grab_proxy ```grab_proxy()``` function helps to fetch the proxies.
+This returns a list of 200 proxies of both type http and https.
+```python
+from greendeck_proxy import proxy_scraper
+proxies_http, proxies_https = proxy_scraper()
+```
+##### Filtering invalid proxies from a list of proxies
+The ```proxy_checker_https``` and ```proxy_checker_http``` methods from ```ProxyChecker``` class helps to validate the proxies.
+Given a list of proxies, it checks each of them to be valid or not, and returns a list of valid proxies from the proxies feeded to it.
 
-
+```python
+from greendeck_proxy import ProxyChecker
+valid_proxies_http = ProxyChecker.proxy_checker_http(proxy_list = proxy_list_http, timeout = 2)
+valid_proxies_https = ProxyChecker.proxy_checker_https(proxy_list = proxy_list_https, timeout = 2)
+```
 ---
 How to build your pip package
 
@@ -46,4 +62,3 @@ In the parent directory
 
 references
 * https://medium.com/small-things-about-python/lets-talk-about-python-packaging-6d84b81f1bb5
-* https://packaging.python.org/tutorials/packaging-projects/elasticsearch

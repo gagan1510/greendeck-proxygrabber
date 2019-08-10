@@ -1,4 +1,4 @@
-GD-HELLOWORLD
+Greendeck Proxygrabber
 ---
 
 *This package is developed by Greendeck[https://greendeck.co]*

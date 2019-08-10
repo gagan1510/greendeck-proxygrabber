@@ -36,7 +36,7 @@ The grab_proxy ```grab_proxy()``` function helps to fetch the proxies.
 grabber.grab_proxy()
 ```
 ##### Getting an unchecked list of proxies
-The grab_proxy ```grab_proxy()``` function helps to fetch the proxies.
+The grab_proxy ```proxy_scraper()``` function helps to fetch the proxies.
 This returns a list of 200 proxies of both type http and https.
 ```python
 from greendeck_proxygrabber import proxy_scraper

@@ -1,4 +1,5 @@
 import json
+import requests
 import sys
 from greendeck_proxygrabber.src.proxygrabber.proxygrabber import ProxyGrabberClass
 from greendeck_proxygrabber.src.proxygrabber.proxychecker import ProxyChecker
@@ -17,8 +18,23 @@ def test_proxy_grabber():
     assert len(proxies['http']) == len(proxies['https']) == 1
 
 def test_proxy_checker():
-    proxy_list = proxies['http']
-    checked_http = ProxyChecker.proxy_checker_http(proxy_list = proxy_list, timeout = 2)
-    proxy_list = proxies['https']
-    checked_https = ProxyChecker.proxy_checker_https(proxy_list = proxy_list, timeout = 2)
-    assert (len(checked_http)==len(proxy_list)) and (len(checked_https)==len(proxy_list))
+    proxy_list_http = proxies['http']
+    proxy_list_https = proxies['https']
+
+    ip_http = []
+    ip_https = []
+    for proxy in proxy_list_http:
+        proxy_dict = {
+            'http': 'http://{}'.format(proxy)
+        }
+        item = requests.get('http://api.ipify.org', proxies = proxy_dict)
+        ip_http.append(item.text)
+    
+    for proxy in proxy_list_https:
+        proxy_dict = {
+            'https': 'https://{}'.format(proxy)
+        }
+        item = requests.get('https://api.ipify.org', proxies = proxy_dict)
+        ip_https.append(item.text)
+    
+    assert (len(ip_http)==len(proxy_list_http)) and (len(ip_https)==len(proxy_list_https))

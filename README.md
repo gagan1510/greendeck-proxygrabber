@@ -3,7 +3,7 @@ greendeck-proxygrabber
 
 *This package is developed by [Greendeck](https://www.greendeck.co/)*
 ### Install from pip
-https://pypi.org/project/greendeck-proxy/
+https://pypi.org/project/greendeck-proxygrabber/
 
 ```pip install greendeck-proxygrabber```
 

@@ -28,7 +28,7 @@ def proxy_scraper(
             combined_proxies = json.loads(https_response.text)
             if (scraped_http_length+batch) < len(combined_proxies[0]['LISTA']):
                 try:
-                    for item in combined_proxies[0]['LISTA'][scraped_https_length:scraped_https_length+batch]:
+                    for item in combined_proxies[0]['LISTA'][scraped_https_length : scraped_https_length + batch]:
                         proxies_https.add(
                             ':'.join([item['IP'], item['PORT']])
                         )
@@ -81,6 +81,7 @@ def proxy_scraper(
                             ':'.join([item['IP'], item['PORT']])
                         )
                         required_http_len -= 1
+                        scraped_http_length += 1
                 except Exception as e:
                     print(e)
                     print("Exception Occured")
@@ -96,6 +97,7 @@ def proxy_scraper(
                         if i.xpath('.//td[7][contains(text(),"no")]'):
                             proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
                             required_http_len -= 1
+                            scraped_http_length += 1
                             proxies_http.add(proxy)
                 except IndexError:
                     for i in parser.xpath('//tbody/tr')[:]:
@@ -111,11 +113,10 @@ def proxy_scraper(
                 try:
                     for i in range(len(parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div'))):
                         proxy = ':'.join([ips[i].text, ports[i].text])
-                        print(proxy)
                         required_http_len -= 1
+                        scraped_http_length += 1
                         proxies_http.add(proxy)
                 except Exception as e:
                     print(e)
                     print("URL 3 ERROR")
-
     return proxies_http, proxies_https

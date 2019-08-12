@@ -5,13 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="greendeck-proxygrabber",
-    version="0.0.4",
+    version="0.0.8",
     author="gagan singh",
     author_email="gaganpreet.gs007@gmail.com",
     description="Greendeck Proxy Grabber Package",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://gitlab.com/greendeck-libraries/gd-proxy-grabber/tree/proxy_grabber",
+    url="https://github.com/gagan1510/greendeck-proxygrabber",
     packages=['greendeck_proxygrabber', 'greendeck_proxygrabber.src', 'greendeck_proxygrabber.src.proxygrabber'],
     classifiers=[
         "Programming Language :: Python :: 3",

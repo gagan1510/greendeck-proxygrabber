@@ -29,7 +29,7 @@ class ProxyGrabber():
         self.update_time = update_time
 
 
-    def _grab_proxy_list(self):
+    def __grab_proxy_list(self):
 
         final_proxies = {
             'http': set(),
@@ -85,7 +85,7 @@ class ProxyGrabber():
         return final_proxies
 
     def grab_proxy(self):
-        proxies = self._grab_proxy_list()
+        proxies = self.__grab_proxy_list()
         return proxies
 
 # ============================================================================================ #

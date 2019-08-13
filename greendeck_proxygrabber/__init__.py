@@ -9,5 +9,5 @@ url = ""
 
 # import sub packages
 from .src.proxygrabber.proxygrabber import ProxyGrabber
-from .src.proxygrabber.country_proxy_grabber import proxy_scraper
+from .src.proxygrabber.country_proxy_grabber import ScrapeProxy
 from .src.proxygrabber.proxychecker import ProxyChecker

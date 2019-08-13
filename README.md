@@ -44,11 +44,11 @@ This returns a dictionary of the following structure:
 }
 ```
 ##### Getting an unchecked list of proxies
-The grab_proxy ```proxy_scraper()``` function helps to fetch the proxies.
+The grab_proxy ```proxy_scraper()``` method of ```ScrapeProxy``` helps to fetch the proxies.
 This returns a list of 200 proxies of both type http and https.
 ```python
-from greendeck_proxygrabber import proxy_scraper
-proxies_http, proxies_https = proxy_scraper()
+from greendeck_proxygrabber import ScrapeProxy
+proxies_http, proxies_https = ScrapeProxy.proxy_scraper()
 ```
 This returns list of proxies of type http proxies followed by https proxies.
 ```
@@ -57,6 +57,7 @@ https_proxies = [< list of https proxies >]
 ```
 ##### Filtering invalid proxies from a list of proxies
 The ```proxy_checker_https``` and ```proxy_checker_http``` methods from ```ProxyChecker``` class helps to validate the proxies.
+
 Given a list of proxies, it checks each of them to be valid or not, and returns a list of valid proxies from the proxies feeded to it.
 
 ```python
@@ -64,10 +65,9 @@ from greendeck_proxygrabber import ProxyChecker
 valid_proxies_http = ProxyChecker.proxy_checker_http(proxy_list = proxy_list_http, timeout = 2)
 valid_proxies_https = ProxyChecker.proxy_checker_https(proxy_list = proxy_list_https, timeout = 2)
 ```
-This returns a list with working proxies and ```None``` in place of dead proxies.
 
 ---
-How to build your pip package
+How to build your own pip package
 
 * open an account here https://pypi.org/
 

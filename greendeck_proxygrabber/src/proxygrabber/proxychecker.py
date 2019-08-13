@@ -16,26 +16,24 @@ headers = {
 IP_CHECK_HTTPS = "https://api.ipify.org"
 IP_CHECK_HTTP = "http://api.ipify.org"
 
+def get_external_ip(tup):
+    proxy_value = tup[0]
+    timeout = tup[1]
+    try:
+        if 'https' in list(proxy_value.keys()):
+            r = requests.get(IP_CHECK_HTTPS, proxies=proxy_value, headers=headers, timeout=timeout)
+            if r.text == proxy_value['https'].split('https://')[-1].split(':')[0]:
+                return proxy_value['https'].split('https://')[-1]
+        else:
+            r = requests.get(IP_CHECK_HTTP, proxies=proxy_value, headers=headers, timeout=timeout)
+            if r.text == proxy_value['http'].split('http://')[-1].split(':')[0]:
+                return proxy_value['http'].split('http://')[-1]
+    except IOError:
+        return False
+    except:
+        return False
+
 class ProxyChecker:
-
-    @classmethod
-    def get_external_ip(cls, tup):
-        proxy_value = tup[0]
-        timeout = tup[1]
-        try:
-            if 'https' in list(proxy_value.keys()):
-                r = requests.get(IP_CHECK_HTTPS, proxies=proxy_value, headers=headers, timeout=timeout)
-                if r.text == proxy_value['https'].split('https://')[-1].split(':')[0]:
-                    return proxy_value['https'].split('https://')[-1]
-            else:
-                r = requests.get(IP_CHECK_HTTP, proxies=proxy_value, headers=headers, timeout=timeout)
-                if r.text == proxy_value['http'].split('http://')[-1].split(':')[0]:
-                    return proxy_value['http'].split('http://')[-1]
-        except IOError:
-            return False
-        except:
-            return False
-
     @classmethod
     def proxy_checker_http(cls, proxy_list, timeout):
         try:
@@ -50,11 +48,12 @@ class ProxyChecker:
             else:
                 print('Not a valid list of proxies')
 
+            # print('http proxies are being checked.')
             pool = ThreadPool(75)
-            final_proxy_list_http = pool.map(ProxyChecker.get_external_ip, proxy_tuple_list_to_check)
+            final_proxy_list_http = pool.map(get_external_ip, proxy_tuple_list_to_check)
             pool.close()
             pool.join()
-            final_proxy_list_http = [proxy for proxy in final_proxy_list_http if proxy != False]
+            # print('http proxies checked.')
             return final_proxy_list_http
         except Exception as e:
             print("INSIDE EXCEPTION!")
@@ -73,13 +72,15 @@ class ProxyChecker:
                     }
                     proxy_tuple_list_to_check.append((proxy_value, timeout))
             else:
-                print('Not a valid list of proxies')
-
+                pass
+                # print('Not a valid list of proxies')
+            # print('https proxies are being checked.')
             pool = ThreadPool(75)
-            final_proxy_list_https = pool.map(ProxyChecker.get_external_ip, proxy_tuple_list_to_check)
+            final_proxy_list_https = pool.map(get_external_ip, proxy_tuple_list_to_check)
             pool.close()
             pool.join()
-            final_proxy_list_https = [proxy for proxy in final_proxy_list_https if proxy != False]
+           
+            # print('https proxies checked.')
             return final_proxy_list_https
         except Exception as e:
             print("INSIDE EXCEPTION!")

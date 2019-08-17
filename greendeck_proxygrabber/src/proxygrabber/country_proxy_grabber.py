@@ -74,24 +74,27 @@ class ScrapeProxy():
             COMBINED_COUNTRY_URL_HTTPS = constant.COMBINED_COUNTRY_URL_HTTPS
             # FOR HTTPS PROXIES
             if required_https_len > 0:
-                # 'https://www.proxy-list.download/api/v0/get?l=en&t=https'
-                https_response = requests.get(COMBINED_COUNTRY_URL_HTTPS[0])
-                combined_proxies = json.loads(https_response.text)
-                if (scraped_https_length+batch) < len(combined_proxies[0]['LISTA']):
-                    for jumps in range(scraped_https_length, scraped_https_length+required_https_len, batch):
-                        try:
-                            for item in combined_proxies[0]['LISTA'][jumps : jumps + batch]:
-                                # if (required_https_len) == 0:
-                                #     break
-                                proxies_https.add(
-                                    ':'.join([item['IP'], item['PORT']])
-                                )
-                                required_https_len -= 1
-                                scraped_https_length += 1
-                        except Exception as e:
-                            print(e)
-                            print("Exception Occured")
-                            return None, None
+                try:
+                    # 'https://www.proxy-list.download/api/v0/get?l=en&t=https'
+                    https_response = requests.get(COMBINED_COUNTRY_URL_HTTPS[0])
+                    combined_proxies = json.loads(https_response.text)
+                    if (scraped_https_length+batch) < len(combined_proxies[0]['LISTA']):
+                        for jumps in range(scraped_https_length, scraped_https_length+required_https_len, batch):
+                            try:
+                                for item in combined_proxies[0]['LISTA'][jumps : jumps + batch]:
+                                    # if (required_https_len) == 0:
+                                    #     break
+                                    proxies_https.add(
+                                        ':'.join([item['IP'], item['PORT']])
+                                    )
+                                    required_https_len -= 1
+                                    scraped_https_length += 1
+                            except Exception as e:
+                                print(e)
+                                print("Exception Occured")
+                                return None, None
+                except:
+                    pass
                 
                 if required_https_len > 0:
                     # 'https://free-proxy-list.net/uk-proxy.html'
@@ -142,25 +145,29 @@ class ScrapeProxy():
             # FOR HTTP PROXIES
             if required_http_len > 0:
                 # 'https://www.proxy-list.download/api/v0/get?l=en&t=http', 
-                http_response = requests.get(COMBINED_COUNTRY_URL_HTTP[0])
-                combined_proxies = json.loads(http_response.text)
-                if (scraped_http_length+batch) < len(combined_proxies[0]['LISTA']):
-                    for jumps in range(scraped_http_length, scraped_http_length+required_http_len, batch):
-                        try:
-                            for item in combined_proxies[0]['LISTA'][jumps : jumps + batch]:
-                                # if (required_http_len) == 0:
-                                #     break
-                                proxies_http.add(
-                                    ':'.join([item['IP'], item['PORT']])
-                                )
-                                required_http_len -= 1
-                                scraped_http_length+=1
-                        except Exception as e:
-                            print(e)
-                            print("Exception Occured")
-                            return None, None
-                        else:
-                            pass
+                try:
+                    http_response = requests.get(COMBINED_COUNTRY_URL_HTTP[0])
+                    combined_proxies = json.loads(http_response.text)
+                    if (scraped_http_length+batch) < len(combined_proxies[0]['LISTA']):
+                        for jumps in range(scraped_http_length, scraped_http_length+required_http_len, batch):
+                            try:
+                                for item in combined_proxies[0]['LISTA'][jumps : jumps + batch]:
+                                    # if (required_http_len) == 0:
+                                    #     break
+                                    proxies_http.add(
+                                        ':'.join([item['IP'], item['PORT']])
+                                    )
+                                    required_http_len -= 1
+                                    scraped_http_length+=1
+                            except Exception as e:
+                                print(e)
+                                print("Exception Occured")
+                                return None, None
+                            else:
+                                pass
+                except:
+                    pass
+
 
                 if required_http_len > 0:
                     # 'https://free-proxy-list.net/uk-proxy.html'
@@ -211,22 +218,25 @@ class ScrapeProxy():
             DE_COUNTRY_URL_HTTPS = constant.COMBINED_DE_URL_HTTPS
             # FOR HTTPS PROXIES
             if required_https_len > 0:
-                # 'https://www.proxy-list.download/api/v0/get?l=en&t=https'
-                https_response = requests.get(DE_COUNTRY_URL_HTTPS[0])
-                combined_proxies = json.loads(https_response.text)
-                if (scraped_https_length+batch) < len(combined_proxies[0]['LISTA']):
-                    # for jumps in range(scraped_https_length, required_https_len, batch):
-                    try:
-                        for item in combined_proxies[0]['LISTA']:
-                            if item['ISO'] == 'DE':
-                                proxies_https.add(
-                                    ':'.join([item['IP'], item['PORT']])
-                                )
-                                required_https_len -= 1
-                                scraped_https_length += 1
-                    except Exception as e:
-                        print(e)
-                        print("Exception Occured")
+                try:
+                    # 'https://www.proxy-list.download/api/v0/get?l=en&t=https'
+                    https_response = requests.get(DE_COUNTRY_URL_HTTPS[0])
+                    combined_proxies = json.loads(https_response.text)
+                    if (scraped_https_length+batch) < len(combined_proxies[0]['LISTA']):
+                        # for jumps in range(scraped_https_length, required_https_len, batch):
+                        try:
+                            for item in combined_proxies[0]['LISTA']:
+                                if item['ISO'] == 'DE':
+                                    proxies_https.add(
+                                        ':'.join([item['IP'], item['PORT']])
+                                    )
+                                    required_https_len -= 1
+                                    scraped_https_length += 1
+                        except Exception as e:
+                            print(e)
+                            print("Exception Occured")
+                except:
+                    pass
             
                 if required_https_len > 0:
                     pass
@@ -263,22 +273,25 @@ class ScrapeProxy():
             UK_COUNTRY_URL_HTTPS = constant.COMBINED_UK_URL_HTTPS
             # FOR HTTPS PROXIES
             if required_https_len > 0:
-                # 'https://www.proxy-list.download/api/v0/get?l=en&t=https'
-                https_response = requests.get(UK_COUNTRY_URL_HTTPS[0])
-                combined_proxies = json.loads(https_response.text)
-                # if (scraped_https_length+batch) < len(combined_proxies[0]['LISTA']):
                 try:
-                    for item in combined_proxies[0]['LISTA']:
-                        if item['ISO'] == 'GB':
-                            proxies_https.add(
-                                ':'.join([item['IP'], item['PORT']])
-                            )
-                            required_https_len -= 1
-                            scraped_https_length += 1
-                except Exception as e:
-                    print(e)
-                    print("Exception Occured")
-                    return None, None
+                    # 'https://www.proxy-list.download/api/v0/get?l=en&t=https'
+                    https_response = requests.get(UK_COUNTRY_URL_HTTPS[0])
+                    combined_proxies = json.loads(https_response.text)
+                    # if (scraped_https_length+batch) < len(combined_proxies[0]['LISTA']):
+                    try:
+                        for item in combined_proxies[0]['LISTA']:
+                            if item['ISO'] == 'GB':
+                                proxies_https.add(
+                                    ':'.join([item['IP'], item['PORT']])
+                                )
+                                required_https_len -= 1
+                                scraped_https_length += 1
+                    except Exception as e:
+                        print(e)
+                        print("Exception Occured")
+                        return None, None
+                except:
+                    pass
 
                 # if required_https_len > 0:
                 if True:
@@ -309,21 +322,24 @@ class ScrapeProxy():
 
             # FOR HTTP PROXIES
             if required_http_len > 0:
-                # 'https://www.proxy-list.download/api/v0/get?l=en&t=https'
-                http_response = requests.get(UK_COUNTRY_URL_HTTP[0])
-                combined_proxies = json.loads(http_response.text)
-                # if (scraped_http_length+batch) < len(combined_proxies[0]['LISTA']):
                 try:
-                    for item in combined_proxies[0]['LISTA']:
-                        if item['ISO'] == 'GB':
-                            proxies_http.add(
-                                ':'.join([item['IP'], item['PORT']])
-                            )
-                            required_http_len -= 1
-                            scraped_http_length+=1
-                except Exception as e:
-                    print(e)
-                    print("Exception Occured")
+                    # 'https://www.proxy-list.download/api/v0/get?l=en&t=https'
+                    http_response = requests.get(UK_COUNTRY_URL_HTTP[0])
+                    combined_proxies = json.loads(http_response.text)
+                    # if (scraped_http_length+batch) < len(combined_proxies[0]['LISTA']):
+                    try:
+                        for item in combined_proxies[0]['LISTA']:
+                            if item['ISO'] == 'GB':
+                                proxies_http.add(
+                                    ':'.join([item['IP'], item['PORT']])
+                                )
+                                required_http_len -= 1
+                                scraped_http_length+=1
+                    except Exception as e:
+                        print(e)
+                        print("Exception Occured")
+                except:
+                    pass
                     
                 # if required_http_len > 0:
                 if True:
@@ -353,21 +369,25 @@ class ScrapeProxy():
 
             # FOR HTTPS PROXIES
             if required_https_len > 0:
-                # 'https://www.proxy-list.download/api/v0/get?l=en&t=https'
-                https_response = requests.get(US_COUNTRY_URL_HTTPS[0])
-                combined_proxies = json.loads(https_response.text)
                 try:
-                    for item in combined_proxies[0]['LISTA']:
-                        if item['ISO'] == 'US':
-                            proxies_https.add(
-                                ':'.join([item['IP'], item['PORT']])
-                            )
-                            required_https_len -= 1
-                            scraped_https_length += 1
-                except Exception as e:
-                    print(e)
-                    print("Exception Occured")
-                    return None, None
+                    # 'https://www.proxy-list.download/api/v0/get?l=en&t=https'
+                    https_response = requests.get(US_COUNTRY_URL_HTTPS[0])
+                    combined_proxies = json.loads(https_response.text)
+                    try:
+                        for item in combined_proxies[0]['LISTA']:
+                            if item['ISO'] == 'US':
+                                proxies_https.add(
+                                    ':'.join([item['IP'], item['PORT']])
+                                )
+                                required_https_len -= 1
+                                scraped_https_length += 1
+                    except Exception as e:
+                        print(e)
+                        print("Exception Occured")
+                        return None, None
+                except:
+                    pass
+
                 if required_https_len > 0:
                     # 'https://www.us-proxy.org/'
                     response = requests.get(US_COUNTRY_URL_HTTPS[1])
@@ -408,23 +428,26 @@ class ScrapeProxy():
             
             # FOR HTTP PROXIES
             if required_http_len > 0:
-                http_response = requests.get(US_COUNTRY_URL_HTTP[0])
-                combined_proxies = json.loads(http_response.text)
                 try:
-                    for item in combined_proxies[0]['LISTA']:
-                        if item['ISO'] == 'US':
-                            proxies_http.add(
-                                ':'.join([item['IP'], item['PORT']])
-                            )
-                            required_http_len -= 1
-                            scraped_http_length+=1
-                except Exception as e:
-                    print(e)
-                    print("Exception Occured")
-                    return None, None
-                else:
+                    http_response = requests.get(US_COUNTRY_URL_HTTP[0])
+                    combined_proxies = json.loads(http_response.text)
+                    try:
+                        for item in combined_proxies[0]['LISTA']:
+                            if item['ISO'] == 'US':
+                                proxies_http.add(
+                                    ':'.join([item['IP'], item['PORT']])
+                                )
+                                required_http_len -= 1
+                                scraped_http_length+=1
+                    except Exception as e:
+                        print(e)
+                        print("Exception Occured")
+                        return None, None
+                    else:
+                        pass
+                except:
                     pass
-                
+
                 if required_http_len > 0:
                     # 'https://www.us-proxy.org/'
                     response = requests.get(US_COUNTRY_URL_HTTP[1])

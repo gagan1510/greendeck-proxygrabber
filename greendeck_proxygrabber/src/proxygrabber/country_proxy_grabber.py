@@ -53,14 +53,14 @@ class ScrapeProxy():
                 return scraped_proxies
 
         return scraped_proxies
-    
+
     @classmethod
     def proxy_scraper(
         cls,
         country_code = 'ALL',
         scraped_http_length = 0,
         scraped_https_length = 0,
-        required_http_len = 200, 
+        required_http_len = 200,
         required_https_len = 200,
         batch = 200
         ):
@@ -95,7 +95,7 @@ class ScrapeProxy():
                                 return None, None
                 except:
                     pass
-                
+
                 if required_https_len > 0:
                     # 'https://free-proxy-list.net/uk-proxy.html'
                     response = requests.get(COMBINED_COUNTRY_URL_HTTPS[1])
@@ -123,7 +123,7 @@ class ScrapeProxy():
                                 pass
                     except:
                         pass
-                
+
                 if required_https_len > 0:
                     # 'https://www.duplichecker.com/free-proxy-list.php'
                     response = requests.get(COMBINED_COUNTRY_URL_HTTPS[2])
@@ -144,7 +144,7 @@ class ScrapeProxy():
 
             # FOR HTTP PROXIES
             if required_http_len > 0:
-                # 'https://www.proxy-list.download/api/v0/get?l=en&t=http', 
+                # 'https://www.proxy-list.download/api/v0/get?l=en&t=http',
                 try:
                     http_response = requests.get(COMBINED_COUNTRY_URL_HTTP[0])
                     combined_proxies = json.loads(http_response.text)
@@ -210,8 +210,8 @@ class ScrapeProxy():
                     except Exception as e:
                         print(e)
                         print("URL 3 ERROR")
-        ################################################ FOR COMBINED PROXIES    
-        
+        ################################################ FOR COMBINED PROXIES
+
         ################################################ FOR GERMANY PROXIES
         if country_code == "DE":
             DE_COUNTRY_URL_HTTP = constant.COMBINED_DE_URL_HTTP
@@ -237,10 +237,10 @@ class ScrapeProxy():
                             print("Exception Occured")
                 except:
                     pass
-            
+
                 if required_https_len > 0:
                     pass
-                
+
 
             # FOR HTTP PROXIES
             if required_http_len > 0:
@@ -318,7 +318,7 @@ class ScrapeProxy():
                                 pass
                     except:
                         pass
-                
+
 
             # FOR HTTP PROXIES
             if required_http_len > 0:
@@ -340,7 +340,7 @@ class ScrapeProxy():
                         print("Exception Occured")
                 except:
                     pass
-                    
+
                 # if required_http_len > 0:
                 if True:
                     # 'https://free-proxy-list.net/uk-proxy.html'
@@ -425,7 +425,7 @@ class ScrapeProxy():
                             proxies_https.add(proxy)
                     except:
                         pass
-            
+
             # FOR HTTP PROXIES
             if required_http_len > 0:
                 try:
@@ -482,5 +482,5 @@ class ScrapeProxy():
                     except:
                         pass
         ################################################ FOR US PROXIES
-        
+
         return proxies_http, proxies_https

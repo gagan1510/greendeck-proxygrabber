@@ -24,10 +24,18 @@ def get_external_ip(tup):
             r = requests.get(IP_CHECK_HTTPS, proxies=proxy_value, headers=headers, timeout=timeout)
             if r.text == proxy_value['https'].split('https://')[-1].split(':')[0]:
                 return proxy_value['https'].split('https://')[-1]
+            # else:
+            #     print('NOT WORKING')
+            #     print(proxy_value)
+
         else:
             r = requests.get(IP_CHECK_HTTP, proxies=proxy_value, headers=headers, timeout=timeout)
             if r.text == proxy_value['http'].split('http://')[-1].split(':')[0]:
                 return proxy_value['http'].split('http://')[-1]
+            # else:
+            #     print('NOT WORKING')
+            #     print(proxy_value)
+
     except IOError:
         return False
     except:
@@ -46,10 +54,11 @@ class ProxyChecker:
                     }
                     proxy_tuple_list_to_check.append((proxy_value, timeout))
             else:
-                print('Not a valid list of proxies')
+                pass
+                # print('Not a valid list of proxies')
 
             # print('http proxies are being checked.')
-            pool = ThreadPool(75)
+            pool = ThreadPool(100)
             final_proxy_list_http = pool.map(get_external_ip, proxy_tuple_list_to_check)
             pool.close()
             pool.join()
@@ -75,7 +84,7 @@ class ProxyChecker:
                 pass
                 # print('Not a valid list of proxies')
             # print('https proxies are being checked.')
-            pool = ThreadPool(75)
+            pool = ThreadPool(100)
             final_proxy_list_https = pool.map(get_external_ip, proxy_tuple_list_to_check)
             pool.close()
             pool.join()

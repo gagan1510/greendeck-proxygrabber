@@ -10,12 +10,13 @@ proxies = {}
 
 def test_proxy_scraper():
     http, https = ScrapeProxy.proxy_scraper()
-    assert (len(http) == 200) and (len(https) == 200)
+    assert (len(http) > 0) and (len(https) > 0)
 
 def test_proxy_grabber():
     global proxies
-    proxy = ProxyGrabber(len_proxy_list=1, timeout=2)
+    proxy = ProxyGrabber(len_proxy_list=1, timeout=2, country_code='ALL')
     proxies = proxy.grab_proxy()
+    print(proxies)
     assert len(proxies['http']) == len(proxies['https']) == 1
 
 def test_proxy_checker():

@@ -13,3 +13,9 @@ __pycache__/
 .pytest_cache/*
 pytest.log
 .DS_Store
+temp.py
+test.py
+proxies.json
+.gitignore
+deploy.py
+CONTRIBUTING.md

@@ -110,6 +110,21 @@ class ScrapeProxy():
                     print("YAHA 1")
                     print(e)
 
+                response = requests.get(COMBINED_COUNTRY_URL_HTTPS[5])
+                try:
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            if len(item.split('|')) == 7:
+                                if item.split('|')[3] == 'https':                            
+                                    proxies_https.add(
+                                            ':'.join([str(item.split('|')[1]), str(item.split('|')[2])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    print("YAHA 1")
+                    print(e)
                 # if required_https_len > 0:
                     # 'https://free-proxy-list.net/uk-proxy.html'
                 response = requests.get(COMBINED_COUNTRY_URL_HTTPS[1])
@@ -186,7 +201,7 @@ class ScrapeProxy():
                 
                 scraped_http_length = max(0, scraped_http_length - len(combined_proxies))
 
-                response = requests.get(COMBINED_COUNTRY_URL_HTTPS[4])
+                response = requests.get(COMBINED_COUNTRY_URL_HTTP[4])
                 try:
                     parser = response.text.split('\n')
                     for item in parser:
@@ -201,7 +216,21 @@ class ScrapeProxy():
                 except Exception as e:
                     print("YAHA 2")
                     print(e)
-
+                
+                response = requests.get(COMBINED_COUNTRY_URL_HTTP[5])
+                try:
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            if len(item.split('|')) == 7:
+                                if item.split('|')[3] == 'https':                            
+                                    proxies_http.add(
+                                            ':'.join([str(item.split('|')[1]), str(item.split('|')[2])])
+                                    )
+                        except:
+                            pass
+                except:
+                    pass
                 response = requests.get(COMBINED_COUNTRY_URL_HTTP[1])
                 parser = fromstring(response.text)
                 scraped_http_length -= len(parser.xpath('//tbody/tr'))

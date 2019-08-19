@@ -11,7 +11,6 @@ from .country_proxy_grabber import ScrapeProxy
 import sys
 
 import asyncio
-from proxybroker import Broker
 
 
 class ProxyGrabber():
@@ -25,18 +24,15 @@ class ProxyGrabber():
         country_code = 'ALL', 
         timeout = 10, 
         to_json = True,
-        update_time = 120
         ):
         self.len_proxy_list = len_proxy_list
 
         if country_code not in self.valid_country_codes:
-            print('INVALID COUNTRY CODE PASSED.')
-            raise ValueError
+            country_code = 'ALL'
 
         self.country_code = country_code
         self.timeout = timeout
         self.to_json = to_json
-        self.update_time = update_time
         self.final_proxies = {
             'http': set(),
             'https': set(),
@@ -54,6 +50,7 @@ class ProxyGrabber():
         remaining_len_http = self.len_proxy_list
         remaining_len_https = self.len_proxy_list
         if self.country_code == "ALL":
+            print("************STARTING TO SCRAPE PROXIES************")
             scraped_proxies_http, scraped_proxies_https = ScrapeProxy.proxy_scraper(country_code = self.country_code,
                                                                         scraped_http_length = total_http_checked,
                                                                         scraped_https_length = total_https_checked,
@@ -69,10 +66,12 @@ class ProxyGrabber():
             print('LEN OF HTTP SCRAPED: {}'.format(len(scraped_proxies_http)))
             print('LEN OF HTTPS SCRAPED: {}'.format(len(scraped_proxies_https)))
 
-            for batch in range(0, len(scraped_proxies_http), 100):
+            limit = self.len_proxy_list
+
+            for batch in range(0, len(scraped_proxies_http), limit * 5):
                 if (len(self.final_proxies['http']) < self.len_proxy_list):
                     try:
-                        checked_http = ProxyChecker.proxy_checker_http(list(scraped_proxies_http)[batch: batch+100], self.timeout)
+                        checked_http = ProxyChecker.proxy_checker_http(list(scraped_proxies_http)[batch: batch+(limit * 5)], self.timeout)
                     except IndexError:
                         checked_http = ProxyChecker.proxy_checker_http(list(scraped_proxies_http)[batch:], self.timeout)
 
@@ -84,7 +83,7 @@ class ProxyGrabber():
             for batch in range(0, len(scraped_proxies_https), 100):
                 if (len(self.final_proxies['https']) < self.len_proxy_list):
                     try:
-                        checked_https = ProxyChecker.proxy_checker_https(list(scraped_proxies_https)[batch: batch+100], self.timeout)
+                        checked_https = ProxyChecker.proxy_checker_https(list(scraped_proxies_https)[batch: batch+(limit * 5)], self.timeout)
                     except IndexError:
                         checked_https = ProxyChecker.proxy_checker_https(list(scraped_proxies_https)[batch:], self.timeout)
 

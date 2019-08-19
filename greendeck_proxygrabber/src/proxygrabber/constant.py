@@ -3,7 +3,8 @@ COMBINED_COUNTRY_URL_HTTPS = [
     'https://free-proxy-list.net/uk-proxy.html',
     'https://www.duplichecker.com/free-proxy-list.php',
     'https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt',
-    'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
+    'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list',
+    'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
 ]
 
 COMBINED_COUNTRY_URL_HTTP = [
@@ -11,7 +12,8 @@ COMBINED_COUNTRY_URL_HTTP = [
     'https://free-proxy-list.net/uk-proxy.html',
     'https://www.duplichecker.com/free-proxy-list.php',
     'https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt',
-    'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
+    'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list',
+    'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
 ]
 
 COMBINED_DE_URL_HTTPS = [

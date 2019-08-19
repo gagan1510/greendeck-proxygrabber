@@ -12,3 +12,4 @@ __pycache__/
 .pytest_cache/
 .pytest_cache/*
 pytest.log
+.DS_Store

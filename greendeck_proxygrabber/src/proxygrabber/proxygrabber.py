@@ -161,15 +161,8 @@ class ProxyGrabber():
         
         return self.final_proxies
 
-    def grab_proxy(self):
-        start = time.time()
-        
+    def grab_proxy(self):        
         proxies = self.__grab_proxy_list()
-        
-        end = time.time()
-
-        print("total time taken is: ")
-        print(end - start)
         return proxies
 
 # ============================================================================================ #

@@ -5,8 +5,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="greendeck-proxygrabber",
-    version="0.0.9",
-    author="gagan singh",
+    version="0.1.0",
+    author="gagan singh k",
     author_email="gaganpreet.gs007@gmail.com",
     description="Greendeck Proxy Grabber Package",
     long_description=long_description,

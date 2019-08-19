@@ -54,14 +54,14 @@ class ScrapeProxy():
                 return scraped_proxies
 
         return scraped_proxies
-    
+
     @classmethod
     def proxy_scraper(
         cls,
         country_code = 'ALL',
         scraped_http_length = 0,
         scraped_https_length = 0,
-        required_http_len = 200, 
+        required_http_len = 200,
         required_https_len = 200,
         batch = 200
         ):

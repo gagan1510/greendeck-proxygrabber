@@ -23,7 +23,7 @@ class ProxyGrabber():
         self, 
         len_proxy_list = 10, 
         country_code = 'ALL', 
-        timeout = 2, 
+        timeout = 10, 
         to_json = True,
         update_time = 120
         ):
@@ -43,15 +43,6 @@ class ProxyGrabber():
             'region' : country_code
         }
 
-    # async def save(self, proxies):
-    #     while True:
-    #         proxy = await proxies.get()
-    #         if proxy is None:
-    #             break
-    #         proto = 'https' if 'HTTPS' in proxy.types else 'http'
-    #         self.final_proxies[proto].add('%s:%d' % (proxy.host, proxy.port))
-    
-
     def __grab_proxy_list(self):
         final_proxies = {
             'http': set(),
@@ -63,7 +54,6 @@ class ProxyGrabber():
         remaining_len_http = self.len_proxy_list
         remaining_len_https = self.len_proxy_list
         if self.country_code == "ALL":
-            # while (remaining_len_http > 0) or (remaining_len_https > 0):
             scraped_proxies_http, scraped_proxies_https = ScrapeProxy.proxy_scraper(country_code = self.country_code,
                                                                         scraped_http_length = total_http_checked,
                                                                         scraped_https_length = total_https_checked,
@@ -75,17 +65,14 @@ class ProxyGrabber():
             count_https = 0
             total_http_checked += len(scraped_proxies_http)
             total_https_checked += len(scraped_proxies_https)
-        
-            # if len(scraped_proxies_http) or len(scraped_proxies_https):
-            #     checked_http = ProxyChecker.proxy_checker_http(scraped_proxies_http, self.timeout)
-            #     checked_https = ProxyChecker.proxy_checker_https(scraped_proxies_https, self.timeout)
-            # else:
-            #     break
 
-            for batch in range(0, len(scraped_proxies_http), 50):
+            print('LEN OF HTTP SCRAPED: {}'.format(len(scraped_proxies_http)))
+            print('LEN OF HTTPS SCRAPED: {}'.format(len(scraped_proxies_https)))
+
+            for batch in range(0, len(scraped_proxies_http), 100):
                 if (len(self.final_proxies['http']) < self.len_proxy_list):
                     try:
-                        checked_http = ProxyChecker.proxy_checker_http(list(scraped_proxies_http)[batch: batch+50], self.timeout)
+                        checked_http = ProxyChecker.proxy_checker_http(list(scraped_proxies_http)[batch: batch+100], self.timeout)
                     except IndexError:
                         checked_http = ProxyChecker.proxy_checker_http(list(scraped_proxies_http)[batch:], self.timeout)
 
@@ -94,10 +81,10 @@ class ProxyGrabber():
                             count_http += 1
                             self.final_proxies['http'].add(proxy)
                     
-            for batch in range(0, len(scraped_proxies_https), 50):
+            for batch in range(0, len(scraped_proxies_https), 100):
                 if (len(self.final_proxies['https']) < self.len_proxy_list):
                     try:
-                        checked_https = ProxyChecker.proxy_checker_https(list(scraped_proxies_https)[batch: batch+50], self.timeout)
+                        checked_https = ProxyChecker.proxy_checker_https(list(scraped_proxies_https)[batch: batch+100], self.timeout)
                     except IndexError:
                         checked_https = ProxyChecker.proxy_checker_https(list(scraped_proxies_https)[batch:], self.timeout)
 
@@ -106,14 +93,6 @@ class ProxyGrabber():
                             count_https += 1
                             self.final_proxies['https'].add(proxy)
 
-                        
-            # remaining_len_http = remaining_len_http - count_http
-            # remaining_len_https = remaining_len_https - count_https
-            
-            # remaining_len_http = max(remaining_len_http, 0)
-            # remaining_len_https = max(remaining_len_https, 0)
-
-        
         else:
             # FOR ALL OTHER REGIONS
             scraped_proxies_http, scraped_proxies_https = ScrapeProxy.proxy_scraper(country_code = self.country_code,
@@ -161,8 +140,12 @@ class ProxyGrabber():
         
         return self.final_proxies
 
-    def grab_proxy(self):        
+    def grab_proxy(self):
+        start = time.time()
         proxies = self.__grab_proxy_list()
+        end = time.time()
+        print('TIME IS ')
+        print(end-start)
         return proxies
 
 # ============================================================================================ #

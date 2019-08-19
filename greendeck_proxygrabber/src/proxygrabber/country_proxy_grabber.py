@@ -79,8 +79,6 @@ class ScrapeProxy():
                     # 'https://www.proxy-list.download/api/v1/get?type=https&anon=elite'
                     https_response = requests.get(COMBINED_COUNTRY_URL_HTTPS[0])
                     combined_proxies = (https_response.text).split('\r\n')
-                    # if (scraped_https_length+batch) < len(combined_proxies):
-                        # for jumps in range(scraped_https_length, scraped_https_length + required_https_len, batch):
                     try:
                         for item in combined_proxies:
                             proxies_https.add(item)
@@ -96,6 +94,22 @@ class ScrapeProxy():
 
                 scraped_https_length = max(0, scraped_https_length - len(combined_proxies))
                 
+                response = requests.get(COMBINED_COUNTRY_URL_HTTPS[4])
+                try:
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            item = eval(item)
+                            if item['type'] == 'https':                            
+                                proxies_https.add(
+                                        ':'.join([str(item['host']), str(item['port'])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    print("YAHA 1")
+                    print(e)
+
                 # if required_https_len > 0:
                     # 'https://free-proxy-list.net/uk-proxy.html'
                 response = requests.get(COMBINED_COUNTRY_URL_HTTPS[1])
@@ -106,8 +120,6 @@ class ScrapeProxy():
                         #     break
                         if i.xpath('.//td[7][contains(text(),"yes")]'):
                             proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
-                            # required_https_len -= 1
-                            # proxies_https.add(proxy)
                         else:
                             pass
                 except IndexError:
@@ -122,7 +134,6 @@ class ScrapeProxy():
                 except:
                     pass
                 
-                # if required_https_len > 0:
                 # 'https://www.duplichecker.com/free-proxy-list.php'
                 response = requests.get(COMBINED_COUNTRY_URL_HTTPS[2])
                 parser = fromstring(response.text)
@@ -130,8 +141,6 @@ class ScrapeProxy():
                 ports = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[2]')
                 try:
                     for i in range(len(parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div'))):
-                        # if (required_https_len) == 0:
-                        #     break
                         proxy = ':'.join([ips[i].text, ports[i].text])
                         required_https_len -= 1
                         scraped_http_length+=1
@@ -140,21 +149,98 @@ class ScrapeProxy():
                     print(e)
                     print("URL 3 ERROR")
 
+                try:
+                    # 'https://www.proxy-list.download/api/v1/get?type=https&anon=elite'
+                    https_response = requests.get(COMBINED_COUNTRY_URL_HTTPS[3])
+                    combined_proxies = (https_response.text).split('\n')
+                    try:
+                        for item in combined_proxies:
+                            proxies_https.add(item)
+                            required_https_len -= 1
+                            scraped_https_length += 1
+                    except Exception as e:
+                        print(e)
+                        print("Exception Occured")
+                        return None, None
+                except Exception as e:
+                    print(e)
+                    pass
+
             # FOR HTTP PROXIES
             if required_http_len > 0:
                 # 'https://www.proxy-list.download/api/v1/get?type=http&anon=elite', 
                 try:
                     http_response = requests.get(COMBINED_COUNTRY_URL_HTTP[0])
                     combined_proxies = (http_response.text).split('\r\n')
-                    # if (scraped_http_length+batch) < len(combined_proxies):
-                        # for jumps in range(scraped_http_length, scraped_http_length + required_http_len, batch):
                     try:
                         for item in combined_proxies:
-                            # if (required_http_len) == 0:
-                            #     break
                             proxies_http.add(item)
-                            # required_http_len -= 1
-                            # scraped_http_length += 1
+                    except Exception as e:
+                        print(e)
+                        print("Exception Occured")
+                        return None, None
+                    else:
+                        pass
+                except Exception as e: 
+                    print(e)
+                
+                scraped_http_length = max(0, scraped_http_length - len(combined_proxies))
+
+                response = requests.get(COMBINED_COUNTRY_URL_HTTPS[4])
+                try:
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            item = eval(item)
+                            if item['type'] == 'http':
+                                proxies_http.add(
+                                        ':'.join([str(item['host']), str(item['port'])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    print("YAHA 2")
+                    print(e)
+
+                response = requests.get(COMBINED_COUNTRY_URL_HTTP[1])
+                parser = fromstring(response.text)
+                scraped_http_length -= len(parser.xpath('//tbody/tr'))
+                try:
+                    for i in parser.xpath('//tbody/tr'):
+                        if i.xpath('.//td[7][contains(text(),"no")]'):
+                            proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
+                            required_http_len -= 1
+                            scraped_http_length += 1
+                            proxies_http.add(proxy)
+                except IndexError:
+                    for i in parser.xpath('//tbody/tr'):
+                        if i.xpath('.//td[7][contains(text(),"no")]'):
+                            proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
+                            proxies_http.add(proxy)
+                            required_http_len -= 1
+                            scraped_http_length += 1
+                            proxies_http.add(proxy)
+
+
+                # 'https://www.duplichecker.com/free-proxy-list.php'
+                response = requests.get(COMBINED_COUNTRY_URL_HTTP[2])
+                parser = fromstring(response.text)
+                ips = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[1]')
+                ports = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[2]')
+                try:
+                    for i in range(len(parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div'))):
+                        proxy = ':'.join([ips[i].text, ports[i].text])
+                        proxies_http.add(proxy)
+                except Exception as e:
+                    print(e)
+                    print("URL 3 ERROR")
+                
+                try:
+                    http_response = requests.get(COMBINED_COUNTRY_URL_HTTP[3])
+                    combined_proxies = (http_response.text).split('\n')
+                    try:
+                        for item in combined_proxies:
+                            proxies_http.add(item)
                     except Exception as e:
                         print(e)
                         print("Exception Occured")
@@ -164,51 +250,6 @@ class ScrapeProxy():
                 except:
                     pass
                 
-                scraped_http_length = max(0, scraped_http_length - len(combined_proxies))
-
-                # if required_http_len > 0:
-                    # 'https://free-proxy-list.net/uk-proxy.html'
-                response = requests.get(COMBINED_COUNTRY_URL_HTTP[1])
-                parser = fromstring(response.text)
-                scraped_http_length -= len(parser.xpath('//tbody/tr'))
-                try:
-                    for i in parser.xpath('//tbody/tr'):
-                        # if (required_http_len) == 0:
-                        #     break
-                        if i.xpath('.//td[7][contains(text(),"no")]'):
-                            proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
-                            required_http_len -= 1
-                            scraped_http_length += 1
-                            proxies_http.add(proxy)
-                except IndexError:
-                    for i in parser.xpath('//tbody/tr'):
-                        # if (required_http_len) == 0:
-                        #     break
-                        if i.xpath('.//td[7][contains(text(),"no")]'):
-                            proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
-                            proxies_http.add(proxy)
-                            required_http_len -= 1
-                            scraped_http_length += 1
-                            proxies_http.add(proxy)
-
-
-                # if required_http_len > 0:
-                    # 'https://www.duplichecker.com/free-proxy-list.php'
-                response = requests.get(COMBINED_COUNTRY_URL_HTTP[2])
-                parser = fromstring(response.text)
-                ips = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[1]')
-                ports = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[2]')
-                try:
-                    for i in range(len(parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div'))):
-                        # if (required_http_len) == 0:
-                        #     break
-                        proxy = ':'.join([ips[i].text, ports[i].text])
-                        # required_http_len -= 1
-                        # scraped_http_length += 1
-                        proxies_http.add(proxy)
-                except Exception as e:
-                    print(e)
-                    print("URL 3 ERROR")
         ################################################ FOR COMBINED PROXIES    
         
         return proxies_http, proxies_https

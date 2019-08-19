@@ -16,6 +16,5 @@ pytest.log
 temp.py
 test.py
 proxies.json
-.gitignore
 deploy.py
 CONTRIBUTING.md

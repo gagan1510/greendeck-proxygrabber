@@ -4,8 +4,8 @@ import fileinput
 
 no_of_test_cases = 3
 pytest_file_name = "test.py"
-previous_version = "0.1.3"
-current_version = "0.1.4"
+previous_version = "0.1.4"
+current_version = "0.1.5"
 package_folder = "greendeck_proxygrabber"
 
 # subprocess.run(["python " + pytest_file_name + " > pytest.log"])

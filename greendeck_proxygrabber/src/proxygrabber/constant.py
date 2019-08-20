@@ -16,6 +16,10 @@ COMBINED_COUNTRY_URL_HTTP = [
     'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
 ]
 
+PROXY_API = [
+    'https://api.getproxylist.com/proxy'
+]
+
 COMBINED_DE_URL_HTTPS = [
     'https://www.proxy-list.download/api/v0/get?l=en&t=https',
 ]

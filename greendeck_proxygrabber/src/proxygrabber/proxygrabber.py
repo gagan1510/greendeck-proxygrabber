@@ -40,11 +40,6 @@ class ProxyGrabber():
         }
 
     def __grab_proxy_list(self):
-        final_proxies = {
-            'http': set(),
-            'https': set(),
-            'region' : 'ALL'
-        }
         total_http_checked = 0
         total_https_checked = 0
         remaining_len_http = self.len_proxy_list
@@ -58,6 +53,7 @@ class ProxyGrabber():
                                                                         required_https_len = remaining_len_https,
                                                                         batch = 100
                                                                         )
+            
             count_http = 0
             count_https = 0
             total_http_checked += len(scraped_proxies_http)
@@ -92,51 +88,6 @@ class ProxyGrabber():
                             count_https += 1
                             self.final_proxies['https'].add(proxy)
 
-        else:
-            # FOR ALL OTHER REGIONS
-            scraped_proxies_http, scraped_proxies_https = ScrapeProxy.proxy_scraper(country_code = self.country_code,
-                                                                        scraped_http_length = total_http_checked,
-                                                                        scraped_https_length = total_https_checked,
-                                                                        required_http_len = remaining_len_http, 
-                                                                        required_https_len = remaining_len_https,
-                                                                        batch=200
-                                                                        )
-            count_http = 0
-            count_https = 0
-
-            total_http_checked += len(scraped_proxies_http)
-            total_https_checked += len(scraped_proxies_https)
-            
-            if len(scraped_proxies_http) or len(scraped_proxies_https):
-                checked_http = ProxyChecker.proxy_checker_http(scraped_proxies_http, self.timeout)
-                checked_https = ProxyChecker.proxy_checker_https(scraped_proxies_https, self.timeout)
-            else:
-                pass
-
-            if len(final_proxies['http']) < self.len_proxy_list:
-                for proxy in checked_http:
-                    if proxy and (len(final_proxies['http']) < self.len_proxy_list):
-                        count_http += 1
-                        self.final_proxies['http'].add(proxy)
-
-            if len(final_proxies['https']) < self.len_proxy_list:
-                for proxy in checked_https:
-                    if proxy and (len(final_proxies['https']) < self.len_proxy_list):
-                        count_https += 1
-                        self.final_proxies['https'].add(proxy)
-
-            remaining_len_http = remaining_len_http - count_http
-            remaining_len_https = remaining_len_https - count_https
-            
-            remaining_len_http = max(remaining_len_http, 0)
-            remaining_len_https = max(remaining_len_https, 0)
-
-        self.final_proxies['https'] = list(self.final_proxies['https'])
-        self.final_proxies['http'] = list(self.final_proxies['http'])
-
-        self.final_proxies['http'] = list(self.final_proxies['http'])
-        self.final_proxies['https'] = list(self.final_proxies['https'])
-        
         return self.final_proxies
 
     def grab_proxy(self):

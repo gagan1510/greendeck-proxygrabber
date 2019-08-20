@@ -1,11 +1,21 @@
+import time
 import json
 import requests
 from lxml.html import fromstring
 from . import constant
 import urllib
+from multiprocessing.dummy import Pool as ThreadPool
+
 
 scraped_http_length = 0
 scraped_https_length = 0
+
+def get_farzi_proxies(url):
+    response = requests.get(url)
+    data = json.loads(response.text)
+    ip_port = data['data'][0]['ipPort']
+    time.sleep(0.4)
+    return ip_port
 
 class ScrapeProxy():
     country_code_dict = {
@@ -73,10 +83,48 @@ class ScrapeProxy():
         if country_code == "ALL":
             COMBINED_COUNTRY_URL_HTTP = constant.COMBINED_COUNTRY_URL_HTTP
             COMBINED_COUNTRY_URL_HTTPS = constant.COMBINED_COUNTRY_URL_HTTPS
+
+            ############ COMBINED
+            # http://pubproxy.com/api/proxy
+            try:
+                pool = ThreadPool(100)
+                url_to_request = ['http://pubproxy.com/api/proxy' for i in range(required_http_len * 2)]
+                results = pool.map(get_farzi_proxies, url_to_request)
+                pool.close()
+                pool.join()
+                for proxy in results:
+                    try:    
+                        # data = json.loads(proxy.text)
+                        # ip = ':'.join([data['data'][0]['ip'], data['data'][0]['port']])
+                        proxies_http.add(proxy)
+                        proxies_https.add(proxy)
+                    except Exception as e:
+                        print(e)
+            except:
+                pass
+
+            # https://proxy11.com/api/demoweb/proxy.json
+            try:
+                response = requests.get('https://proxy11.com/api/demoweb/proxy.json')
+                data = json.loads(response.text)
+                for proxy_info in data['data']:
+                    proxies_http.add(
+                        ':'.join([proxy_info['ip'], proxy_info['port']])
+                    )
+                    proxies_https.add(
+                        ':'.join([proxy_info['ip'], proxy_info['port']])
+                    )
+            except:
+                pass
+                # print(e)
+            ############ COMBINED
+
+
             # FOR HTTPS PROXIES
             if required_https_len > 0:
+
+                # 'https://www.proxy-list.download/api/v1/get?type=https&anon=elite'
                 try:
-                    # 'https://www.proxy-list.download/api/v1/get?type=https&anon=elite'
                     https_response = requests.get(COMBINED_COUNTRY_URL_HTTPS[0])
                     combined_proxies = (https_response.text).split('\r\n')
                     try:
@@ -92,10 +140,9 @@ class ScrapeProxy():
                     print(e)
                     pass
 
-                scraped_https_length = max(0, scraped_https_length - len(combined_proxies))
-                
-                response = requests.get(COMBINED_COUNTRY_URL_HTTPS[4])
+                # 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list',
                 try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTPS[4])
                     parser = response.text.split('\n')
                     for item in parser:
                         try:
@@ -110,8 +157,9 @@ class ScrapeProxy():
                     print("YAHA 1")
                     print(e)
 
-                response = requests.get(COMBINED_COUNTRY_URL_HTTPS[5])
+                # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
                 try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTPS[5])
                     parser = response.text.split('\n')
                     for item in parser:
                         try:
@@ -125,11 +173,11 @@ class ScrapeProxy():
                 except Exception as e:
                     print("YAHA 1")
                     print(e)
-                # if required_https_len > 0:
-                    # 'https://free-proxy-list.net/uk-proxy.html'
-                response = requests.get(COMBINED_COUNTRY_URL_HTTPS[1])
-                parser = fromstring(response.text)
+                
+                # 'https://free-proxy-list.net/uk-proxy.html' 
                 try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTPS[1])
+                    parser = fromstring(response.text)
                     for i in parser.xpath('//tbody/tr'):
                         # if (required_https_len) == 0:
                         #     break
@@ -150,11 +198,11 @@ class ScrapeProxy():
                     pass
                 
                 # 'https://www.duplichecker.com/free-proxy-list.php'
-                response = requests.get(COMBINED_COUNTRY_URL_HTTPS[2])
-                parser = fromstring(response.text)
-                ips = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[1]')
-                ports = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[2]')
                 try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTPS[2])
+                    parser = fromstring(response.text)
+                    ips = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[1]')
+                    ports = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[2]')
                     for i in range(len(parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div'))):
                         proxy = ':'.join([ips[i].text, ports[i].text])
                         required_https_len -= 1
@@ -164,6 +212,7 @@ class ScrapeProxy():
                     print(e)
                     print("URL 3 ERROR")
 
+                # 'https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt',
                 try:
                     # 'https://www.proxy-list.download/api/v1/get?type=https&anon=elite'
                     https_response = requests.get(COMBINED_COUNTRY_URL_HTTPS[3])
@@ -199,10 +248,9 @@ class ScrapeProxy():
                 except Exception as e: 
                     print(e)
                 
-                scraped_http_length = max(0, scraped_http_length - len(combined_proxies))
 
-                response = requests.get(COMBINED_COUNTRY_URL_HTTP[4])
                 try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTP[4])
                     parser = response.text.split('\n')
                     for item in parser:
                         try:
@@ -217,8 +265,8 @@ class ScrapeProxy():
                     print("YAHA 2")
                     print(e)
                 
-                response = requests.get(COMBINED_COUNTRY_URL_HTTP[5])
                 try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTP[5])
                     parser = response.text.split('\n')
                     for item in parser:
                         try:
@@ -231,10 +279,11 @@ class ScrapeProxy():
                             pass
                 except:
                     pass
-                response = requests.get(COMBINED_COUNTRY_URL_HTTP[1])
-                parser = fromstring(response.text)
-                scraped_http_length -= len(parser.xpath('//tbody/tr'))
+                
                 try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTP[1])
+                    parser = fromstring(response.text)
+                    scraped_http_length -= len(parser.xpath('//tbody/tr'))
                     for i in parser.xpath('//tbody/tr'):
                         if i.xpath('.//td[7][contains(text(),"no")]'):
                             proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
@@ -252,11 +301,11 @@ class ScrapeProxy():
 
 
                 # 'https://www.duplichecker.com/free-proxy-list.php'
-                response = requests.get(COMBINED_COUNTRY_URL_HTTP[2])
-                parser = fromstring(response.text)
-                ips = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[1]')
-                ports = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[2]')
                 try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTP[2])
+                    parser = fromstring(response.text)
+                    ips = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[1]')
+                    ports = parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div/div[2]')
                     for i in range(len(parser.xpath('/html/body/div[5]/div/div[1]/div[1]/form/div/div/div/div[2]/div'))):
                         proxy = ':'.join([ips[i].text, ports[i].text])
                         proxies_http.add(proxy)
@@ -277,8 +326,7 @@ class ScrapeProxy():
                     else:
                         pass
                 except:
-                    pass
-                
+                    pass                
         ################################################ FOR COMBINED PROXIES    
         
         return proxies_http, proxies_https

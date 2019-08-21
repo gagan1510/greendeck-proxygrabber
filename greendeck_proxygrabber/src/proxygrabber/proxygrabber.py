@@ -1,7 +1,8 @@
 # !/usr/bin/env python
+import sys
 import time
+import threading
 from queue import Queue
-from threading import Thread
 import lxml
 import requests
 from lxml import html
@@ -9,21 +10,19 @@ from lxml.html import fromstring
 from .proxychecker import ProxyChecker
 from .country_proxy_grabber import ScrapeProxy
 import sys
+import pymongo
 
 import asyncio
 
 
 class ProxyGrabber():
     proxy_list=[]
-
     valid_country_codes = ['ALL','US','UK','DE']
-
     def __init__(
         self, 
         len_proxy_list = 10, 
         country_code = 'ALL', 
         timeout = 10, 
-        to_json = True,
         ):
         self.len_proxy_list = len_proxy_list
 
@@ -32,7 +31,6 @@ class ProxyGrabber():
 
         self.country_code = country_code
         self.timeout = timeout
-        self.to_json = to_json
         self.final_proxies = {
             'http': set(),
             'https': set(),
@@ -45,7 +43,6 @@ class ProxyGrabber():
         remaining_len_http = self.len_proxy_list
         remaining_len_https = self.len_proxy_list
         if self.country_code == "ALL":
-            print("************STARTING TO SCRAPE PROXIES************")
             scraped_proxies_http, scraped_proxies_https = ScrapeProxy.proxy_scraper(country_code = self.country_code,
                                                                         scraped_http_length = total_http_checked,
                                                                         scraped_https_length = total_https_checked,
@@ -87,15 +84,153 @@ class ProxyGrabber():
                         if proxy and (len(self.final_proxies['https']) < self.len_proxy_list):
                             count_https += 1
                             self.final_proxies['https'].add(proxy)
+            
+            self.final_proxies['https'] = list(self.final_proxies['https'])
+            self.final_proxies['http'] = list(self.final_proxies['http'])
 
         return self.final_proxies
 
     def grab_proxy(self):
-        start = time.time()
         proxies = self.__grab_proxy_list()
         end = time.time()
-        print('TIME IS ')
-        print(end-start)
         return proxies
 
 # ============================================================================================ #
+
+# SPINNER JUST TO MAKE IT LOOK COOL.========================================================🤪 #
+class Spinner:
+    busy = False
+    delay = 0.1
+
+    @staticmethod
+    def spinning_cursor():
+        while 1: 
+            for cursor in '|/-\\': yield cursor
+
+    def __init__(self, delay=None):
+        self.spinner_generator = self.spinning_cursor()
+        if delay and float(delay): self.delay = delay
+
+    def spinner_task(self):
+        while self.busy:
+            sys.stdout.write(next(self.spinner_generator))
+            sys.stdout.flush()
+            time.sleep(self.delay)
+            sys.stdout.write('\b')
+            sys.stdout.flush()
+
+    def __enter__(self):
+        self.busy = True
+        threading.Thread(target=self.spinner_task).start()
+
+    def __exit__(self, exception, value, tb):
+        self.busy = False
+        time.sleep(self.delay)
+        if exception is not None:
+            return False
+
+# ============================================================================================ #
+class ProxyService():
+    def __init__(
+        self,
+        MONGO_URI = 'mongodb://127.0.0.1:27017',
+        update_time = 300,
+        pool_limit = 1000,
+        update_count = 200,
+        database_name = 'proxy_pool',
+        collection_name_http = 'http',
+        collection_name_https = 'https'
+        ):
+        if type(MONGO_URI) == type(' '):
+            self.MONGO_URI = MONGO_URI
+        else:
+            raise TypeError
+        
+        if type(database_name) == type(' '):
+            self.database_name = database_name
+        else:
+            raise TypeError
+
+        if type(collection_name_http) == type(' '):
+            self.collection_name_http = collection_name_http
+        else:
+            raise TypeError
+
+        if type(collection_name_https) == type(' '):
+            self.collection_name_https = collection_name_https
+        else:
+            raise TypeError
+
+        if type(update_count) == type(2):
+            self.update_count = update_count
+        else:
+            raise TypeError
+
+        if type(update_time) == type(2):
+            self.update_time = update_time
+        else:
+            raise TypeError
+
+        if type(pool_limit) == type(2):
+            self.pool_limit = pool_limit
+        else:
+            raise TypeError
+    
+    def __proxy_service(self):
+        while True:
+            grabber = ProxyGrabber(len_proxy_list=self.update_count, country_code='ALL')
+            proxies = grabber.grab_proxy()
+            try:
+                client = pymongo.MongoClient(
+                    self.MONGO_URI
+                )
+            except:
+                raise pymongo.errors.InvalidURI
+        
+            db = client[self.database_name]
+            collection_http = db[self.collection_name_http]
+            collection_https = db[self.collection_name_https]
+        
+            print('INSERTING PROXIES')
+        
+            start = time.time()
+            # INSERTING HTTP PROXIES
+            http = []
+            for item in proxies['http']:
+                proxy = {
+                    'http' : 'http://{}'.format(item)
+                }
+                http.append(proxy)
+        
+            collection_http.insert_many(http)
+        
+            # INSERTING HTTPS PROXIES
+            https = []
+            for item in proxies['https']:
+                proxy = {
+                    'https' : 'https://{}'.format(item)
+                }
+                https.append(proxy)
+        
+            collection_https.insert_many(https)
+            client.close()
+            print('PROXIES INSERTED')
+        
+            if collection_http.count() >= self.pool_limit:
+                http_to_remove = collection_http.find({}, {'_id': 1}).limit(self.update_count)
+                http_to_remove = [http_proxy['_id'] for http_proxy in http_to_remove]
+                collection_http.remove({'_id': {'$in': http_to_remove}})
+                print('UPDATED HTTP')
+            
+            if collection_https.count() >= self.pool_limit:
+                https_to_remove = collection_https.find({}, {'_id': 1}).limit(self.update_count)
+                https_to_remove = [https_proxy['_id'] for https_proxy in https_to_remove]
+                collection_https.remove({'_id': {'$in': https_to_remove}})
+                print('UPDATED HTTPS')
+            end = time.time()
+            time.sleep(max(0, (self.update_time - (end - start))))
+        
+    def start(self):
+        print('Proxy Service Started!!!...')
+        print('Press Ctrl+C to stop...')
+        self.__proxy_service()

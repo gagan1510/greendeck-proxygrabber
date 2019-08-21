@@ -88,7 +88,7 @@ class ScrapeProxy():
             # http://pubproxy.com/api/proxy
             try:
                 pool = ThreadPool(100)
-                url_to_request = ['http://pubproxy.com/api/proxy' for i in range(required_http_len * 2)]
+                url_to_request = ['http://pubproxy.com/api/proxy' for i in range(required_http_len * 5)]
                 results = pool.map(get_farzi_proxies, url_to_request)
                 pool.close()
                 pool.join()

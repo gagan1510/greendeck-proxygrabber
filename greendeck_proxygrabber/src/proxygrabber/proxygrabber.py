@@ -223,7 +223,6 @@ class ProxyService():
                     https_to_remove = collection_https.find({}, {'_id': 1}).limit(self.update_count)
                     https_to_remove = [https_proxy['_id'] for https_proxy in https_to_remove]
                     collection_https.remove({'_id': {'$in': https_to_remove}})
-                    print('UPDATED HTTPS')
                 end = time.time()
                 time.sleep(max(0, (self.update_time - (end - start))))
                 sys.stdout.write('\b')

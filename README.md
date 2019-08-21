@@ -7,11 +7,55 @@ https://pypi.org/project/greendeck-proxygrabber/
 
 ```pip install greendeck-proxygrabber```
 
+### What is proxy service?
+Proxy service is a service that keeps and updates a Mongo Database with latest up and running proxies.
+
 ### How to use ?
-##### import the library
+
+##### import the service class
+
 ```python
-import greendeck_proxygrabber
+from greendeck_proxygrabber import ProxyService
+service = ProxyService(MONGO_URI = 'mongodb://127.0.0.1:27017',
+                       update_time = 300,
+                       pool_limit = 1000,
+                       update_count = 200,
+                       database_name = 'proxy_pool',
+                       collection_name_http = 'http',
+                       collection_name_https = 'https'
+                       )
 ```
+
+This creates a service object.
+
+##### Args
+
+* update_time = Time after which proxies will be updated (in seconds)
+* pool_limit = Limit after which insertion will change to updation
+* update_count = Number of proxies to request grabber at a time
+* database_name = Mongo Database name to store proxies in
+* collection_name_http = Collection name to store http proxies in
+* collection_name_https = Collection name to store https proxies in
+
+##### Starting the service
+
+```python
+service.start()
+```
+
+Starting service gives the following output:
+
+```Starting proxy service with the following configuration
+MONGO_URI: mongodb://127.0.0.1:27017
+Database: proxy_pool
+Collection names: http, https
+Press Ctrl+C once to stop...
+Running Proxy Service.../
+```
+
+This will run forever and will push/update proxies in mongodb after every {```update_time```} seconds.
+
+### How to use Proxy Grabber Class?
 
 ##### import ```ProxyGrabber``` class
 ```python
@@ -24,9 +68,9 @@ grabber = ProxyGrabber(len_proxy_list, country_code, timeout)
 ```
 Here default values of some arguments are,
 ```
-* len_proxy_list = 10
-* country_code = 'ALL'
-* timeout = 2
+len_proxy_list = 10
+country_code = 'ALL'
+timeout = 2
 ```
 Currently the program only supports proxies of combined regions
 

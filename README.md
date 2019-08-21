@@ -1,16 +1,17 @@
-greendeck-proxygrabber
+greendeck-proxygrabber 
 ---
+![Gd Logo](https://www.greendeck.co/images/logo/logo_full.png "Greenddeck")
 
-*This package is developed by [Greendeck](https://www.greendeck.co/)*
+*This package is developed by [Greendeck](https://www.greendeck.co/)* 🎭
 ### Install from pip
 https://pypi.org/project/greendeck-proxygrabber/
 
 ```pip install greendeck-proxygrabber```
 
-### What is proxy service?
+### 👉 What is proxy service?
 Proxy service is a service that keeps and updates a Mongo Database with latest up and running proxies.
 
-### How to use ?
+### 👉 How to use?
 
 ##### import the service class
 
@@ -55,7 +56,7 @@ Running Proxy Service.../
 
 This will run forever and will push/update proxies in mongodb after every {```update_time```} seconds.
 
-### How to use Proxy Grabber Class?
+### 👉 How to use Proxy Grabber Class?
 
 ##### import ```ProxyGrabber``` class
 ```python
@@ -111,7 +112,7 @@ valid_proxies_https = ProxyChecker.proxy_checker_https(proxy_list = proxy_list_h
 ```
 
 ---
-How to build your own pip package
+👉 How to build your own pip package
 
 * open an account here https://pypi.org/
 

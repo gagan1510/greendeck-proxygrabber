@@ -1,8 +1,8 @@
-greendeck-proxygrabber 
+greendeck-proxygrabber 🎭
 ---
 ![Gd Logo](https://www.greendeck.co/images/logo/logo_full.png "Greenddeck")
 
-*This package is developed by [Greendeck](https://www.greendeck.co/)* 🎭
+*This package is developed by [Greendeck](https://www.greendeck.co/)*
 ### Install from pip
 https://pypi.org/project/greendeck-proxygrabber/
 

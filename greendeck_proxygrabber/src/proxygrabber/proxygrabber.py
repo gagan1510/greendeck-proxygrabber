@@ -212,7 +212,6 @@ class ProxyService():
                     https.append(proxy)
             
                 collection_https.insert_many(https)
-                client.close()
             
                 if collection_http.count() >= self.pool_limit:
                     http_to_remove = collection_http.find({}, {'_id': 1}).limit(self.update_count)
@@ -226,6 +225,8 @@ class ProxyService():
                 end = time.time()
                 time.sleep(max(0, (self.update_time - (end - start))))
                 sys.stdout.write('\b')
+                client.close()
+
             print("Proxies Updated!")
         
     def start(self):

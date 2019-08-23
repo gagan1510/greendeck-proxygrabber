@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="greendeck-proxygrabber",
-    version="0.2.2",
+    version="0.2.3",
     author="gagan singh k",
     author_email="gaganpreet.gs007@gmail.com",
     description="Greendeck Proxy Grabber Package",
@@ -20,6 +20,7 @@ setuptools.setup(
     ],
     install_requires=[
         'lxml',
+        'pymongo'
     ],
     include_package_data=True,
     zip_safe=False

@@ -177,22 +177,22 @@ class ProxyService():
     
 
     def __proxy_service(self):
+        grabber = ProxyGrabber(len_proxy_list=self.update_count, country_code='ALL')
         while True:
             sys.stdout.write('\nRunning Proxy Service...')
             with Spinner():
-                grabber = ProxyGrabber(len_proxy_list=self.update_count, country_code='ALL')
                 proxies = grabber.grab_proxy()
                 try:
                     client = pymongo.MongoClient(
                         self.MONGO_URI
                     )
                 except:
-                    raise pymongo.errors.InvalidURI
-            
+                    continue
                 db = client[self.database_name]
                 collection_http = db[self.collection_name_http]
                 collection_https = db[self.collection_name_https]            
                 start = time.time()
+                
                 # INSERTING HTTP PROXIES
                 http = []
                 for item in proxies['http']:
@@ -222,10 +222,12 @@ class ProxyService():
                     https_to_remove = collection_https.find({}, {'_id': 1}).limit(self.update_count)
                     https_to_remove = [https_proxy['_id'] for https_proxy in https_to_remove]
                     collection_https.remove({'_id': {'$in': https_to_remove}})
+
+
+                client.close()
                 end = time.time()
                 time.sleep(max(0, (self.update_time - (end - start))))
                 sys.stdout.write('\b')
-                client.close()
 
             print("Proxies Updated!")
         

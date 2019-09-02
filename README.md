@@ -6,6 +6,13 @@ greendeck-proxygrabber 🎭
 ### Install from pip
 https://pypi.org/project/greendeck-proxygrabber/
 
+---
+**WHATS NEW?**
+
+Added proxy grabbing support of 4 regions to proxy service, proxy grabber and proxy scraper.
+
+---
+
 ```pip install greendeck-proxygrabber```
 
 ### 👉 What is proxy service?
@@ -23,7 +30,8 @@ service = ProxyService(MONGO_URI = 'mongodb://127.0.0.1:27017',
                        update_count = 200,
                        database_name = 'proxy_pool',
                        collection_name_http = 'http',
-                       collection_name_https = 'https'
+                       collection_name_https = 'https',
+                       country_code = 'ALL'
                        )
 ```
 
@@ -37,8 +45,16 @@ This creates a service object.
 * database_name = Mongo Database name to store proxies in
 * collection_name_http = Collection name to store http proxies in
 * collection_name_https = Collection name to store https proxies in
+* country_code = ISO code of one of regions supported
 
-##### Starting the service
+List of supported regions is:
+* Combined Regions: ALL
+* United States: US
+* Germany: DE
+* Great Britain: GB
+* France: FR
+
+#### Starting the service
 
 ```python
 service.start()

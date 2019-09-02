@@ -17,7 +17,7 @@ import asyncio
 # ============================================================================================ #
 class ProxyGrabber():
     proxy_list=[]
-    valid_country_codes = ['ALL','US','UK','DE']
+    valid_country_codes = ['ALL','US','GB','DE', 'FR']
     def __init__(
         self, 
         len_proxy_list = 10, 
@@ -26,10 +26,10 @@ class ProxyGrabber():
         ):
         self.len_proxy_list = len_proxy_list
 
-        if country_code not in self.valid_country_codes:
+        if country_code.upper() not in self.valid_country_codes:
             country_code = 'ALL'
 
-        self.country_code = country_code
+        self.country_code = country_code.upper()
         self.timeout = timeout
         self.final_proxies = {
             'http': set(),
@@ -135,13 +135,19 @@ class ProxyService():
         update_count = 200,
         database_name = 'proxy_pool',
         collection_name_http = 'http',
-        collection_name_https = 'https'
+        collection_name_https = 'https',
+        country_code = 'ALL'
         ):
         if type(MONGO_URI) == type(' '):
             self.MONGO_URI = MONGO_URI
         else:
             raise TypeError
         
+        if type(country_code) == type(' '):
+            self.country_code = country_code.upper()
+        else:
+            raise TypeError
+
         if type(database_name) == type(' '):
             self.database_name = database_name
         else:
@@ -177,7 +183,7 @@ class ProxyService():
     
 
     def __proxy_service(self):
-        grabber = ProxyGrabber(len_proxy_list=self.update_count, country_code='ALL')
+        grabber = ProxyGrabber(len_proxy_list=self.update_count, country_code=self.country_code)
         while True:
             sys.stdout.write('\nRunning Proxy Service...')
             with Spinner():

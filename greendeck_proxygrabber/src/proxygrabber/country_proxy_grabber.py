@@ -99,7 +99,7 @@ class ScrapeProxy():
                         proxies_http.add(proxy)
                         proxies_https.add(proxy)
                     except Exception as e:
-                        print(e)
+                        pass
             except:
                 pass
 
@@ -116,7 +116,7 @@ class ScrapeProxy():
                     )
             except:
                 pass
-                # print(e)
+                # pass
             ############ COMBINED
 
 
@@ -133,11 +133,10 @@ class ScrapeProxy():
                             required_https_len -= 1
                             scraped_https_length += 1
                     except Exception as e:
-                        print(e)
-                        print("Exception Occured")
+                        pass
                         return None, None
                 except Exception as e:
-                    print(e)
+                    pass
                     pass
 
                 # https://www.proxy-list.download/api/v0/get?l=en&t=https
@@ -149,7 +148,7 @@ class ScrapeProxy():
                                 ':'.join([proxy_item['IP'],proxy_item['PORT']])
                             )
                         except Exception as e:
-                            print(e)
+                            pass
                 except:
                     pass
 
@@ -167,8 +166,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 1")
-                    print(e)
+                    pass
 
                 # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
                 try:
@@ -184,8 +182,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 1")
-                    print(e)
+                    pass
                 
                 # 'https://free-proxy-list.net/uk-proxy.html' 
                 try:
@@ -222,8 +219,7 @@ class ScrapeProxy():
                         scraped_http_length+=1
                         proxies_https.add(proxy)
                 except Exception as e:
-                    print(e)
-                    print("URL 3 ERROR")
+                    pass
 
                 # 'https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt',
                 try:
@@ -236,11 +232,10 @@ class ScrapeProxy():
                             required_https_len -= 1
                             scraped_https_length += 1
                     except Exception as e:
-                        print(e)
-                        print("Exception Occured")
+                        pass
                         return None, None
                 except Exception as e:
-                    print(e)
+                    pass
                     pass
 
             # FOR HTTP PROXIES
@@ -253,13 +248,12 @@ class ScrapeProxy():
                         for item in combined_proxies:
                             proxies_http.add(item)
                     except Exception as e:
-                        print(e)
-                        print("Exception Occured")
+                        pass
                         return None, None
                     else:
                         pass
                 except Exception as e: 
-                    print(e)
+                    pass
                 
 
                 # https://www.proxy-list.download/api/v0/get?l=en&t=https
@@ -271,7 +265,7 @@ class ScrapeProxy():
                                 ':'.join([proxy_item['IP'],proxy_item['PORT']])
                             )
                         except Exception as e:
-                            print(e)
+                            pass
                 except:
                     pass
 
@@ -288,8 +282,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 2")
-                    print(e)
+                    pass
                 
                 try:
                     response = requests.get(COMBINED_COUNTRY_URL_HTTP[5])
@@ -336,8 +329,7 @@ class ScrapeProxy():
                         proxy = ':'.join([ips[i].text, ports[i].text])
                         proxies_http.add(proxy)
                 except Exception as e:
-                    print(e)
-                    print("URL 3 ERROR")
+                    pass
                 
                 try:
                     http_response = requests.get(COMBINED_COUNTRY_URL_HTTP[3])
@@ -346,8 +338,7 @@ class ScrapeProxy():
                         for item in combined_proxies:
                             proxies_http.add(item)
                     except Exception as e:
-                        print(e)
-                        print("Exception Occured")
+                        pass
                         return None, None
                     else:
                         pass
@@ -375,7 +366,7 @@ class ScrapeProxy():
                         proxies_http.add(proxy)
                         proxies_https.add(proxy)
                     except Exception as e:
-                        print(e)
+                        pass
             except:
                 pass
 
@@ -393,7 +384,7 @@ class ScrapeProxy():
                         )
             except:
                 pass
-                # print(e)
+                # pass
             ############ COMBINED
 
             # FOR HTTPS PROXIES
@@ -409,7 +400,7 @@ class ScrapeProxy():
                                     ':'.join([proxy_item['IP'],proxy_item['PORT']])
                                 )
                         except Exception as e:
-                            print(e)
+                            pass
                 except:
                     pass
 
@@ -427,8 +418,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 1")
-                    print(e)
+                    pass
 
                 # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
                 try:
@@ -444,8 +434,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 1")
-                    print(e)
+                    pass
                 
                 # 'https://www.us-proxy.org/' 
                 try:
@@ -483,7 +472,7 @@ class ScrapeProxy():
                                     ':'.join([proxy_item['IP'],proxy_item['PORT']])
                                 )
                             except Exception as e:
-                                print(e)
+                                pass
                 except:
                     pass
 
@@ -500,8 +489,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 2")
-                    print(e)
+                    pass
                 
                 try:
                     response = requests.get(COMBINED_COUNTRY_URL_HTTP[5])
@@ -548,8 +536,7 @@ class ScrapeProxy():
                         proxy = ':'.join([ips[i].text, ports[i].text])
                         proxies_http.add(proxy)
                 except Exception as e:
-                    print(e)
-                    print("URL 3 ERROR")
+                    pass
                 
                 try:
                     http_response = requests.get(COMBINED_COUNTRY_URL_HTTP[3])
@@ -558,8 +545,7 @@ class ScrapeProxy():
                         for item in combined_proxies:
                             proxies_http.add(item)
                     except Exception as e:
-                        print(e)
-                        print("Exception Occured")
+                        pass
                         return None, None
                     else:
                         pass
@@ -587,7 +573,7 @@ class ScrapeProxy():
                         proxies_http.add(proxy)
                         proxies_https.add(proxy)
                     except Exception as e:
-                        print(e)
+                        pass
             except:
                 pass
 
@@ -605,7 +591,7 @@ class ScrapeProxy():
                         )
             except:
                 pass
-                # print(e)
+                # pass
             ############ COMBINED
 
             # FOR HTTPS PROXIES
@@ -621,7 +607,7 @@ class ScrapeProxy():
                                     ':'.join([proxy_item['IP'],proxy_item['PORT']])
                                 )
                         except Exception as e:
-                            print(e)
+                            pass
                 except:
                     pass
 
@@ -639,8 +625,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 1")
-                    print(e)
+                    pass
 
                 # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
                 try:
@@ -656,8 +641,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 1")
-                    print(e)
+                    pass
                 
                 # https://free-proxy-list.net/uk-proxy.html
                 try:
@@ -695,7 +679,7 @@ class ScrapeProxy():
                                     ':'.join([proxy_item['IP'],proxy_item['PORT']])
                                 )
                             except Exception as e:
-                                print(e)
+                                pass
                 except:
                     pass
 
@@ -713,8 +697,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 2")
-                    print(e)
+                    pass
                 
                 try:
                     response = requests.get(COMBINED_COUNTRY_URL_HTTP[5])
@@ -771,7 +754,7 @@ class ScrapeProxy():
                         proxies_http.add(proxy)
                         proxies_https.add(proxy)
                     except Exception as e:
-                        print(e)
+                        pass
             except:
                 pass
 
@@ -789,7 +772,7 @@ class ScrapeProxy():
                         )
             except:
                 pass
-                # print(e)
+                # pass
             ############ COMBINED
 
             # FOR HTTPS PROXIES
@@ -805,7 +788,7 @@ class ScrapeProxy():
                                     ':'.join([proxy_item['IP'],proxy_item['PORT']])
                                 )
                         except Exception as e:
-                            print(e)
+                            pass
                 except:
                     pass
 
@@ -823,8 +806,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 1")
-                    print(e)
+                    pass
 
                 # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
                 try:
@@ -840,8 +822,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 1")
-                    print(e)
+                    pass
 
             # FOR HTTP PROXIES
             if required_http_len > 0:
@@ -856,7 +837,7 @@ class ScrapeProxy():
                                     ':'.join([proxy_item['IP'],proxy_item['PORT']])
                                 )
                             except Exception as e:
-                                print(e)
+                                pass
                 except:
                     pass
 
@@ -873,8 +854,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 2")
-                    print(e)
+                    pass
                    
                 # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
                 try:
@@ -913,7 +893,7 @@ class ScrapeProxy():
                         proxies_http.add(proxy)
                         proxies_https.add(proxy)
                     except Exception as e:
-                        print(e)
+                        pass
             except:
                 pass
 
@@ -931,7 +911,7 @@ class ScrapeProxy():
                         )
             except:
                 pass
-                # print(e)
+                # pass
             ############ COMBINED
 
             # FOR HTTPS PROXIES
@@ -947,7 +927,7 @@ class ScrapeProxy():
                                     ':'.join([proxy_item['IP'],proxy_item['PORT']])
                                 )
                         except Exception as e:
-                            print(e)
+                            pass
                 except:
                     pass
 
@@ -965,8 +945,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 1")
-                    print(e)
+                    pass
 
                 # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
                 try:
@@ -982,8 +961,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 1")
-                    print(e)
+                    pass
 
             # FOR HTTP PROXIES
             if required_http_len > 0:
@@ -998,7 +976,7 @@ class ScrapeProxy():
                                     ':'.join([proxy_item['IP'],proxy_item['PORT']])
                                 )
                             except Exception as e:
-                                print(e)
+                                pass
                 except:
                     pass
 
@@ -1016,8 +994,7 @@ class ScrapeProxy():
                         except:
                             pass
                 except Exception as e:
-                    print("YAHA 2")
-                    print(e)
+                    pass
                    
                 # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
                 try:

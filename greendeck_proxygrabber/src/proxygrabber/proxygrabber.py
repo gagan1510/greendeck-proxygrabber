@@ -19,10 +19,10 @@ class ProxyGrabber():
     proxy_list=[]
     valid_country_codes = ['ALL','US','GB','DE', 'FR']
     def __init__(
-        self, 
-        len_proxy_list = 10, 
-        country_code = 'ALL', 
-        timeout = 10, 
+        self,
+        len_proxy_list = 10,
+        country_code = 'ALL',
+        timeout = 10,
         ):
         self.len_proxy_list = len_proxy_list
 
@@ -42,6 +42,10 @@ class ProxyGrabber():
         total_https_checked = 0
         remaining_len_http = self.len_proxy_list
         remaining_len_https = self.len_proxy_list
+        self.final_proxies['http'] = set()
+        self.final_proxies['https'] = set()
+
+        # FOR COMBINED REGIONS
         if self.country_code == "ALL":
             scraped_proxies_http, scraped_proxies_https = ScrapeProxy.proxy_scraper(country_code = self.country_code,
                                                                         scraped_http_length = total_http_checked,
@@ -85,6 +89,7 @@ class ProxyGrabber():
             self.final_proxies['https'] = list(self.final_proxies['https'])
             self.final_proxies['http'] = list(self.final_proxies['http'])
         
+        # FOR SINGLE REGION
         else:
             scraped_proxies_http, scraped_proxies_https = ScrapeProxy.proxy_scraper(country_code = self.country_code,
                                                                         scraped_http_length = total_http_checked,

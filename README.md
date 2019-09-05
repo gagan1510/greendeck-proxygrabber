@@ -6,6 +6,8 @@ greendeck-proxygrabber 🎭
 ### Install from pip
 https://pypi.org/project/greendeck-proxygrabber/
 
+```pip install greendeck-proxygrabber```
+
 ---
 **WHATS NEW?**
 
@@ -13,9 +15,8 @@ Added proxy grabbing support of 4 regions to proxy service, proxy grabber and pr
 
 ---
 
-```pip install greendeck-proxygrabber```
-
 ### 👉 What is proxy service?
+
 Proxy service is a service that keeps and updates a Mongo Database with latest up and running proxies.
 
 ### 👉 How to use?

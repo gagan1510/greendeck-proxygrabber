@@ -18,4 +18,5 @@ proxies.json
 deploy.py
 CONTRIBUTING.md
 proxy_service.py
+setup.py
 region_proxy_start.sh

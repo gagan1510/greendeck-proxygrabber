@@ -311,7 +311,7 @@ class ProxyToMongo():
         else:
             raise TypeError
 
-        self.information = '''Gather proxies with the following configuration:\nMONGO_URI: {}\nDatabase: {}\nCollection names: {}, {}\nPress Ctrl+C to stop...'''.format(self.MONGO_URI, self.database_name, self.collection_name_http, self.collection_name_https)
+        self.information = '''Gathering proxies with the following configuration:\nMONGO_URI: {}\nDatabase: {}\nCollection names: {}, {}\nPress Ctrl+C to stop...'''.format(self.MONGO_URI, self.database_name, self.collection_name_http, self.collection_name_https)
         self.delay = 0.01
     
     def __gather_proxy(self):

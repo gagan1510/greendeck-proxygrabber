@@ -68,7 +68,7 @@ MONGO_URI: mongodb://127.0.0.1:27017
 Database: proxy_pool
 Collection names: http, https
 Press Ctrl+C once to stop...
-Running Proxy Service.../
+Running Proxy Service...
 ```
 
 This will run forever and will push/update proxies in mongodb after every {```update_time```} seconds.

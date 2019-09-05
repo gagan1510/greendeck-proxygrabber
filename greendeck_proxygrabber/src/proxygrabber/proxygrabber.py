@@ -316,7 +316,7 @@ class ProxyToMongo():
     
     def __gather_proxy(self):
         grabber = ProxyGrabber(len_proxy_list=self.update_count, country_code=self.country_code)
-        sys.stdout.write('\nRunning Proxy Service...')
+        print('\nRunning Proxy Service...')
         proxies = grabber.grab_proxy()
         try:
             client = pymongo.MongoClient(
@@ -363,13 +363,12 @@ class ProxyToMongo():
         client.close()
         end = time.time()
 
-        sys.stdout.write('\b')
+        print('\b')
 
         print("Proxies Grabbed!")
                 
     def get_quick_proxy(self):
         for i in self.information:
-            sys.stdout.write(i)
-            sys.stdout.flush()
+            print(i)
             time.sleep(self.delay)
         self.__gather_proxy()

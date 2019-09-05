@@ -12,3 +12,4 @@ from .src.proxygrabber.proxygrabber import ProxyGrabber
 from .src.proxygrabber.country_proxy_grabber import ScrapeProxy
 from .src.proxygrabber.proxychecker import ProxyChecker
 from .src.proxygrabber.proxygrabber import ProxyService
+from .src.proxygrabber.proxygrabber import ProxyToMongo

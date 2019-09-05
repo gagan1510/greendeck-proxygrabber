@@ -140,39 +140,6 @@ class ProxyGrabber():
         end = time.time()
         return proxies
 
-# SPINNER JUST TO MAKE IT LOOK COOL.========================================================🤪 #
-class Spinner:
-    busy = False
-    delay = 0.1
-
-    @staticmethod
-    def spinning_cursor():
-        while 1: 
-            for cursor in '|/-\\': yield cursor
-
-    def __init__(self, delay=None):
-        self.spinner_generator = self.spinning_cursor()
-        if delay and float(delay): self.delay = delay
-
-    def spinner_task(self):
-        # print('\b')
-        while self.busy:
-            sys.stdout.write(next(self.spinner_generator))
-            sys.stdout.flush()
-            time.sleep(self.delay)
-            sys.stdout.write('\b')
-            sys.stdout.flush()
-
-    def __enter__(self):
-        self.busy = True
-        threading.Thread(target=self.spinner_task).start()
-
-    def __exit__(self, exception, value, tb):
-        self.busy = False
-        time.sleep(self.delay)
-        if exception is not None:
-            return False
-
 # ============================================================================================ #
 class ProxyService():
     def __init__(
@@ -229,65 +196,180 @@ class ProxyService():
         self.information = '''Starting proxy service with the following configuration\nMONGO_URI: {}\nDatabase: {}\nCollection names: {}, {}\nPress Ctrl+C to stop...'''.format(self.MONGO_URI, self.database_name, self.collection_name_http, self.collection_name_https)
         self.delay = 0.01
     
-
     def __proxy_service(self):
         grabber = ProxyGrabber(len_proxy_list=self.update_count, country_code=self.country_code)
         while True:
             sys.stdout.write('\nRunning Proxy Service...')
-            with Spinner():
-                proxies = grabber.grab_proxy()
-                try:
-                    client = pymongo.MongoClient(
-                        self.MONGO_URI
-                    )
-                except:
-                    continue
-                db = client[self.database_name]
-                collection_http = db[self.collection_name_http]
-                collection_https = db[self.collection_name_https]            
-                start = time.time()
-                
-                # INSERTING HTTP PROXIES
-                http = []
-                for item in proxies['http']:
-                    proxy = {
-                        'http' : 'http://{}'.format(item)
-                    }
-                    http.append(proxy)
-            
-                collection_http.insert_many(http)
-            
-                # INSERTING HTTPS PROXIES
-                https = []
-                for item in proxies['https']:
-                    proxy = {
-                        'https' : 'https://{}'.format(item)
-                    }
-                    https.append(proxy)
-            
-                collection_https.insert_many(https)
-            
-                if collection_http.count() >= self.pool_limit:
-                    http_to_remove = collection_http.find({}, {'_id': 1}).limit(self.update_count)
-                    http_to_remove = [http_proxy['_id'] for http_proxy in http_to_remove]
-                    collection_http.remove({'_id': {'$in': http_to_remove}})
-                
-                if collection_https.count() >= self.pool_limit:
-                    https_to_remove = collection_https.find({}, {'_id': 1}).limit(self.update_count)
-                    https_to_remove = [https_proxy['_id'] for https_proxy in https_to_remove]
-                    collection_https.remove({'_id': {'$in': https_to_remove}})
-
-
-                client.close()
-                end = time.time()
-                time.sleep(max(0, (self.update_time - (end - start))))
-                sys.stdout.write('\b')
-
-            print("Proxies Updated!")
         
+            proxies = grabber.grab_proxy()
+            try:
+                client = pymongo.MongoClient(
+                    self.MONGO_URI
+                )
+            except:
+                continue
+            db = client[self.database_name]
+            collection_http = db[self.collection_name_http]
+            collection_https = db[self.collection_name_https]            
+            start = time.time()
+            
+            # INSERTING HTTP PROXIES
+            http = []
+            for item in proxies['http']:
+                proxy = {
+                    'http' : 'http://{}'.format(item)
+                }
+                http.append(proxy)
+        
+            collection_http.insert_many(http)
+        
+            # INSERTING HTTPS PROXIES
+            https = []
+            for item in proxies['https']:
+                proxy = {
+                    'https' : 'https://{}'.format(item)
+                }
+                https.append(proxy)
+        
+            collection_https.insert_many(https)
+        
+            if collection_http.count() >= self.pool_limit:
+                http_to_remove = collection_http.find({}, {'_id': 1}).limit(self.update_count)
+                http_to_remove = [http_proxy['_id'] for http_proxy in http_to_remove]
+                collection_http.remove({'_id': {'$in': http_to_remove}})
+            
+            if collection_https.count() >= self.pool_limit:
+                https_to_remove = collection_https.find({}, {'_id': 1}).limit(self.update_count)
+                https_to_remove = [https_proxy['_id'] for https_proxy in https_to_remove]
+                collection_https.remove({'_id': {'$in': https_to_remove}})
+
+
+            client.close()
+            end = time.time()
+            time.sleep(max(0, (self.update_time - (end - start))))
+            sys.stdout.write('\b')
+
+        print("Proxies Updated!")
+                
     def start(self):
         for i in self.information:
             sys.stdout.write(i)
             sys.stdout.flush()
             time.sleep(self.delay)
         self.__proxy_service()
+
+# ============================================================================================ #
+class ProxyToMongo():
+    def __init__(
+        self,
+        MONGO_URI = 'mongodb://127.0.0.1:27017',
+        update_time = 300,
+        pool_limit = 1000,
+        update_count = 200,
+        database_name = 'proxy_pool',
+        collection_name_http = 'http',
+        collection_name_https = 'https',
+        country_code = 'ALL'
+        ):
+        if type(MONGO_URI) == type(' '):
+            self.MONGO_URI = MONGO_URI
+        else:
+            raise TypeError
+        
+        if type(country_code) == type(' '):
+            self.country_code = country_code.upper()
+        else:
+            raise TypeError
+
+        if type(database_name) == type(' '):
+            self.database_name = database_name
+        else:
+            raise TypeError
+
+        if type(collection_name_http) == type(' '):
+            self.collection_name_http = collection_name_http
+        else:
+            raise TypeError
+
+        if type(collection_name_https) == type(' '):
+            self.collection_name_https = collection_name_https
+        else:
+            raise TypeError
+
+        if type(update_count) == type(2):
+            self.update_count = update_count
+        else:
+            raise TypeError
+
+        if type(update_time) == type(2):
+            self.update_time = update_time
+        else:
+            raise TypeError
+
+        if type(pool_limit) == type(2):
+            self.pool_limit = pool_limit
+        else:
+            raise TypeError
+
+        self.information = '''Gather proxies with the following configuration:\nMONGO_URI: {}\nDatabase: {}\nCollection names: {}, {}\nPress Ctrl+C to stop...'''.format(self.MONGO_URI, self.database_name, self.collection_name_http, self.collection_name_https)
+        self.delay = 0.01
+    
+    def __gather_proxy(self):
+        grabber = ProxyGrabber(len_proxy_list=self.update_count, country_code=self.country_code)
+        sys.stdout.write('\nRunning Proxy Service...')
+        proxies = grabber.grab_proxy()
+        try:
+            client = pymongo.MongoClient(
+                self.MONGO_URI
+            )
+        except:
+            return
+        db = client[self.database_name]
+        collection_http = db[self.collection_name_http]
+        collection_https = db[self.collection_name_https]            
+        start = time.time()
+        
+        # INSERTING HTTP PROXIES
+        http = []
+        for item in proxies['http']:
+            proxy = {
+                'http' : 'http://{}'.format(item)
+            }
+            http.append(proxy)
+    
+        collection_http.insert_many(http)
+    
+        # INSERTING HTTPS PROXIES
+        https = []
+        for item in proxies['https']:
+            proxy = {
+                'https' : 'https://{}'.format(item)
+            }
+            https.append(proxy)
+    
+        collection_https.insert_many(https)
+    
+        if collection_http.count() >= self.pool_limit:
+            http_to_remove = collection_http.find({}, {'_id': 1}).limit(self.update_count)
+            http_to_remove = [http_proxy['_id'] for http_proxy in http_to_remove]
+            collection_http.remove({'_id': {'$in': http_to_remove}})
+        
+        if collection_https.count() >= self.pool_limit:
+            https_to_remove = collection_https.find({}, {'_id': 1}).limit(self.update_count)
+            https_to_remove = [https_proxy['_id'] for https_proxy in https_to_remove]
+            collection_https.remove({'_id': {'$in': https_to_remove}})
+
+
+        client.close()
+        end = time.time()
+
+        sys.stdout.write('\b')
+
+        print("Proxies Grabbed!")
+                
+    def get_quick_proxy(self):
+        for i in self.information:
+            sys.stdout.write(i)
+            sys.stdout.flush()
+            time.sleep(self.delay)
+        self.__gather_proxy()

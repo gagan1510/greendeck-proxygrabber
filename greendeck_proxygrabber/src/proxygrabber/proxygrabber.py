@@ -263,9 +263,7 @@ class ProxyToMongo():
     def __init__(
         self,
         MONGO_URI = 'mongodb://127.0.0.1:27017',
-        update_time = 300,
-        pool_limit = 1000,
-        update_count = 200,
+        pool_limit = 20,
         database_name = 'proxy_pool',
         collection_name_http = 'http',
         collection_name_https = 'https',
@@ -295,17 +293,6 @@ class ProxyToMongo():
             self.collection_name_https = collection_name_https
         else:
             raise TypeError
-
-        if type(update_count) == type(2):
-            self.update_count = update_count
-        else:
-            raise TypeError
-
-        if type(update_time) == type(2):
-            self.update_time = update_time
-        else:
-            raise TypeError
-
         if type(pool_limit) == type(2):
             self.pool_limit = pool_limit
         else:
@@ -315,8 +302,8 @@ class ProxyToMongo():
         self.delay = 0.01
     
     def __gather_proxy(self):
-        grabber = ProxyGrabber(len_proxy_list=self.update_count, country_code=self.country_code)
-        print('\nRunning Proxy Service...')
+        grabber = ProxyGrabber(len_proxy_list=self.pool_limit, country_code=self.country_code)
+        print('\nRunning Proxy Grabber...')
         proxies = grabber.grab_proxy()
         try:
             client = pymongo.MongoClient(

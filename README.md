@@ -73,6 +73,60 @@ Running Proxy Service...
 
 This will run forever and will push/update proxies in mongodb after every {```update_time```} seconds.
 
+### 👉 What is proxy to mongo?
+
+Proxy to mongo is a functionality that lets you grab a set of valid proxies from the Internet and store it to the desired MongoDB database.
+
+### 👉 How to use?
+
+##### import the ProxyToMongo class
+
+```python
+from greendeck_proxygrabber import ProxyService
+service = ProxyToMongo( MONGO_URI = MONGO_URI,
+                        pool_limit = 200,
+                        database_name='proxy_pool',
+                        collection_name_http='http',
+                        collection_name_https='https',
+                        country_code='DE'
+                        )
+```
+
+This creates a service object.
+
+##### Args
+
+* pool_limit = Total number of proxies to grab
+* database_name = Mongo Database name to store proxies in
+* collection_name_http = Collection name to store http proxies in
+* collection_name_https = Collection name to store https proxies in
+* country_code = ISO code of one of regions supported
+
+List of supported regions is:
+* Combined Regions: ALL
+* United States: US
+* Germany: DE
+* Great Britain: GB
+* France: FR
+
+#### Calling the ProxyToMongo grabber
+
+```python
+service.get_quick_proxy()
+```
+
+Starting Grabber gives the following output:
+
+```Gathering proxies with the following configuration:
+MONGO_URI: mongodb://127.0.0.1:27017
+Database: proxy_pool
+Collection names: http, https
+Press Ctrl+C once to stop...
+Running Proxy Grabber...
+```
+
+This will run forever and will push/update proxies in mongodb after every {```update_time```} seconds.
+
 ### 👉 How to use Proxy Grabber Class?
 
 ##### import ```ProxyGrabber``` class

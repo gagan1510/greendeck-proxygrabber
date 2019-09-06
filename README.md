@@ -75,7 +75,7 @@ This will run forever and will push/update proxies in mongodb after every {```up
 
 ### 👉 What is proxy to mongo?
 
-Proxy to mongo is a functionality that lets you grab a set of valid proxies from the Internet and store it to the desired MongoDB database.
+Proxy to mongo is a functionality that lets you grab a set of valid proxies from the Internet and store it to the desired MongoDB database. You can schedule this to update or insert a given set of proxies to your database of pool, i.e. put it on airflow or any task scheduler.
 
 ### 👉 How to use?
 

@@ -263,7 +263,8 @@ class ProxyToMongo():
     def __init__(
         self,
         MONGO_URI = 'mongodb://127.0.0.1:27017',
-        pool_limit = 20,
+        pool_limit = 1000,
+        length_proxy = 200,
         database_name = 'proxy_pool',
         collection_name_http = 'http',
         collection_name_https = 'https',
@@ -293,8 +294,16 @@ class ProxyToMongo():
             self.collection_name_https = collection_name_https
         else:
             raise TypeError
+        
         if type(pool_limit) == type(2):
             self.pool_limit = pool_limit
+        elif type(pool_limit) == type(None):
+            self.pool_limit = pool_limit
+        else:
+            raise TypeError
+
+        if type(length_proxy) == type(2):
+            self.length_proxy = length_proxy
         else:
             raise TypeError
 
@@ -302,7 +311,7 @@ class ProxyToMongo():
         self.delay = 0.01
     
     def __gather_proxy(self):
-        grabber = ProxyGrabber(len_proxy_list=self.pool_limit, country_code=self.country_code)
+        grabber = ProxyGrabber(len_proxy_list=self.length_proxy, country_code=self.country_code)
         print('\nRunning Proxy Grabber...')
         proxies = grabber.grab_proxy()
         try:
@@ -335,23 +344,24 @@ class ProxyToMongo():
             https.append(proxy)
     
         collection_https.insert_many(https)
-    
-        if collection_http.count() >= self.pool_limit:
-            http_to_remove = collection_http.find({}, {'_id': 1}).limit(self.update_count)
-            http_to_remove = [http_proxy['_id'] for http_proxy in http_to_remove]
-            collection_http.remove({'_id': {'$in': http_to_remove}})
-        
-        if collection_https.count() >= self.pool_limit:
-            https_to_remove = collection_https.find({}, {'_id': 1}).limit(self.update_count)
-            https_to_remove = [https_proxy['_id'] for https_proxy in https_to_remove]
-            collection_https.remove({'_id': {'$in': https_to_remove}})
 
+        if type(self.pool_limit) == type(1):
+            if collection_http.count() >= self.pool_limit:
+                http_to_remove = collection_http.find({}, {'_id': 1}).limit(int(collection_http.count()) - self.pool_limit)
+                http_to_remove = [http_proxy['_id'] for http_proxy in http_to_remove]
+                collection_http.remove({'_id': {'$in': http_to_remove}})
+            
+            if collection_https.count() >= self.pool_limit:
+                https_to_remove = collection_https.find({}, {'_id': 1}).limit(int(collection_http.count()) - self.pool_limit)
+                https_to_remove = [https_proxy['_id'] for https_proxy in https_to_remove]
+                collection_https.remove({'_id': {'$in': https_to_remove}})
+        else:
+            pass
 
         client.close()
         end = time.time()
 
         print('\b')
-
         print("Proxies Grabbed!")
                 
     def get_quick_proxy(self):

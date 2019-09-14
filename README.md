@@ -84,7 +84,8 @@ Proxy to mongo is a functionality that lets you grab a set of valid proxies from
 ```python
 from greendeck_proxygrabber import ProxyService
 service = ProxyToMongo( MONGO_URI = MONGO_URI,
-                        pool_limit = 200,
+                        pool_limit = 1000,
+                        length_proxy = 200,
                         database_name='proxy_pool',
                         collection_name_http='http',
                         collection_name_https='https',
@@ -96,7 +97,8 @@ This creates a service object.
 
 ##### Args
 
-* pool_limit = Total number of proxies to grab
+* pool_limit = Total number of proxies to keep in mongo/pass None if you don't want to update
+* length_proxy = Number of proxies to fetch at once
 * database_name = Mongo Database name to store proxies in
 * collection_name_http = Collection name to store http proxies in
 * collection_name_https = Collection name to store https proxies in

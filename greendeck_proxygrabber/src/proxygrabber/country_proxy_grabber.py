@@ -344,7 +344,7 @@ class ScrapeProxy():
                         pass
                 except:
                     pass                
-        ################################################ FOR COMBINED PROXIES    
+        ################################################ FOR COMBINED PROXIES
 
         ################################################ FOR US PROXIES
         if country_code == "US":
@@ -551,7 +551,7 @@ class ScrapeProxy():
                         pass
                 except:
                     pass                
-        ################################################ FOR US PROXIES    
+        ################################################ FOR US PROXIES
 
         ################################################ FOR GB PROXIES
         if country_code == "GB":
@@ -732,7 +732,7 @@ class ScrapeProxy():
                             required_http_len -= 1
                             scraped_http_length += 1
                             proxies_http.add(proxy)   
-        ################################################ FOR GB PROXIES    
+        ################################################ FOR GB PROXIES
 
         ################################################ FOR DE PROXIES
         if country_code == "DE":
@@ -871,7 +871,7 @@ class ScrapeProxy():
                             pass
                 except:
                     pass                
-        ################################################ FOR DE PROXIES    
+        ################################################ FOR DE PROXIES
 
         ################################################ FOR FR PROXIES
         if country_code == "FR":
@@ -1011,7 +1011,7 @@ class ScrapeProxy():
                             pass
                 except:
                     pass                
-        ################################################ FOR FR PROXIES    
+        ################################################ FOR FR PROXIES
         
         ################################################ FOR NL PROXIES
         if country_code == "NL":
@@ -1151,7 +1151,7 @@ class ScrapeProxy():
                             pass
                 except:
                     pass                
-        ################################################ FOR NL PROXIES    
+        ################################################ FOR NL PROXIES
 
         ################################################ FOR NL PROXIES
         if country_code == "CZ":
@@ -1291,7 +1291,7 @@ class ScrapeProxy():
                             pass
                 except:
                     pass                
-        ################################################ FOR NL PROXIES    
+        ################################################ FOR NL PROXIES
         
         ################################################ FOR NL PROXIES
         if country_code == "IN":
@@ -1431,7 +1431,6 @@ class ScrapeProxy():
                             pass
                 except:
                     pass                
-        ################################################ FOR NL PROXIES    
-   
+        ################################################ FOR NL PROXIES
 
         return proxies_http, proxies_https

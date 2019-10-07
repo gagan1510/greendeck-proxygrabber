@@ -1432,5 +1432,6 @@ class ScrapeProxy():
                 except:
                     pass                
         ################################################ FOR NL PROXIES    
+   
 
         return proxies_http, proxies_https

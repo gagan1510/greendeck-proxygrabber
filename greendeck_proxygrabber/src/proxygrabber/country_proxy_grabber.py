@@ -1013,4 +1013,424 @@ class ScrapeProxy():
                     pass                
         ################################################ FOR FR PROXIES    
         
+        ################################################ FOR NL PROXIES
+        if country_code == "NL":
+            COMBINED_COUNTRY_URL_HTTP = constant.COMBINED_COUNTRY_URL_HTTP
+            COMBINED_COUNTRY_URL_HTTPS = constant.COMBINED_COUNTRY_URL_HTTPS
+
+            ############ COMBINED
+            # http://pubproxy.com/api/proxy
+            try:
+                pool = ThreadPool(100)
+                url_to_request = ['http://pubproxy.com/api/proxy?country=NL' for i in range(required_http_len * 5)]
+                results = pool.map(get_farzi_proxies, url_to_request)
+                pool.close()
+                pool.join()
+                for proxy in results:
+                    try:    
+                        # data = json.loads(proxy.text)
+                        # ip = ':'.join([data['data'][0]['ip'], data['data'][0]['port']])
+                        proxies_http.add(proxy)
+                        proxies_https.add(proxy)
+                    except Exception as e:
+                        pass
+            except:
+                pass
+
+            # https://proxy11.com/api/demoweb/proxy.json
+            try:
+                response = requests.get('https://proxy11.com/api/demoweb/proxy.json')
+                data = json.loads(response.text)
+                for proxy_info in data['data']:
+                    if proxy_info['country_code'] == country_code.lower():
+                        proxies_http.add(
+                            ':'.join([proxy_info['ip'], proxy_info['port']])
+                        )
+                        proxies_https.add(
+                            ':'.join([proxy_info['ip'], proxy_info['port']])
+                        )
+            except:
+                pass
+                # pass
+            ############ COMBINED
+
+            # FOR HTTPS PROXIES
+            if required_https_len > 0:
+
+                # https://www.proxy-list.download/api/v0/get?l=en&t=https
+                try:
+                    proxy_json = json.loads(requests.get('https://www.proxy-list.download/api/v0/get?l=en&t=https', timeout = 5).text)
+                    for proxy_item in proxy_json[0]['LISTA']:
+                        try:
+                            if proxy_item['ISO'].lower() == country_code.lower():
+                                proxies_https.add(
+                                    ':'.join([proxy_item['IP'],proxy_item['PORT']])
+                                )
+                        except Exception as e:
+                            pass
+                except:
+                    pass
+
+                # 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list',
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTPS[4])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            item = eval(item)
+                            if item['type'] == 'https' and item['country'].lower() == country_code.lower():
+                                proxies_https.add(
+                                        ':'.join([str(item['host']), str(item['port'])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    pass
+
+                # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTPS[5])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            if len(item.split('|')) == 7:
+                                if item.split('|')[3] == 'https' and ('netherlands' in item.split('|')[-2].lower()):
+                                    proxies_https.add(
+                                            ':'.join([str(item.split('|')[1]), str(item.split('|')[2])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    pass
+
+            # FOR HTTP PROXIES
+            if required_http_len > 0:
+
+                # https://www.proxy-list.download/api/v0/get?l=en&t=https
+                try:
+                    proxy_json = json.loads(requests.get('https://www.proxy-list.download/api/v0/get?l=en&t=http', timeout = 5).text)
+                    for proxy_item in proxy_json[0]['LISTA']:
+                        if proxy_item['ISO'].lower() == country_code.lower():
+                            try:
+                                proxies_http.add(
+                                    ':'.join([proxy_item['IP'],proxy_item['PORT']])
+                                )
+                            except Exception as e:
+                                pass
+                except:
+                    pass
+
+                # 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list',
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTP[4])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            item = eval(item)
+                            if item['type'] == 'http' and item['country'].lower() == country_code.lower():
+                                proxies_http.add(
+                                        ':'.join([str(item['host']), str(item['port'])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    pass
+                   
+                # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTP[5])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            if len(item.split('|')) == 7:
+                                if item.split('|')[3] == 'http' and ('netherlands' in item.split('|')[-2].lower()):
+                                    proxies_http.add(
+                                            ':'.join([str(item.split('|')[1]), str(item.split('|')[2])])
+                                    )
+                        except:
+                            pass
+                except:
+                    pass                
+        ################################################ FOR NL PROXIES    
+
+        ################################################ FOR NL PROXIES
+        if country_code == "CZ":
+            COMBINED_COUNTRY_URL_HTTP = constant.COMBINED_COUNTRY_URL_HTTP
+            COMBINED_COUNTRY_URL_HTTPS = constant.COMBINED_COUNTRY_URL_HTTPS
+
+            ############ COMBINED
+            # http://pubproxy.com/api/proxy
+            try:
+                pool = ThreadPool(100)
+                url_to_request = ['http://pubproxy.com/api/proxy?country=CZ' for i in range(required_http_len * 5)]
+                results = pool.map(get_farzi_proxies, url_to_request)
+                pool.close()
+                pool.join()
+                for proxy in results:
+                    try:    
+                        # data = json.loads(proxy.text)
+                        # ip = ':'.join([data['data'][0]['ip'], data['data'][0]['port']])
+                        proxies_http.add(proxy)
+                        proxies_https.add(proxy)
+                    except Exception as e:
+                        pass
+            except:
+                pass
+
+            # https://proxy11.com/api/demoweb/proxy.json
+            try:
+                response = requests.get('https://proxy11.com/api/demoweb/proxy.json')
+                data = json.loads(response.text)
+                for proxy_info in data['data']:
+                    if proxy_info['country_code'] == country_code.lower():
+                        proxies_http.add(
+                            ':'.join([proxy_info['ip'], proxy_info['port']])
+                        )
+                        proxies_https.add(
+                            ':'.join([proxy_info['ip'], proxy_info['port']])
+                        )
+            except:
+                pass
+                # pass
+            ############ COMBINED
+
+            # FOR HTTPS PROXIES
+            if required_https_len > 0:
+
+                # https://www.proxy-list.download/api/v0/get?l=en&t=https
+                try:
+                    proxy_json = json.loads(requests.get('https://www.proxy-list.download/api/v0/get?l=en&t=https', timeout = 5).text)
+                    for proxy_item in proxy_json[0]['LISTA']:
+                        try:
+                            if proxy_item['ISO'].lower() == country_code.lower():
+                                proxies_https.add(
+                                    ':'.join([proxy_item['IP'],proxy_item['PORT']])
+                                )
+                        except Exception as e:
+                            pass
+                except:
+                    pass
+
+                # 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list',
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTPS[4])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            item = eval(item)
+                            if item['type'] == 'https' and item['country'].lower() == country_code.lower():
+                                proxies_https.add(
+                                        ':'.join([str(item['host']), str(item['port'])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    pass
+
+                # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTPS[5])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            if len(item.split('|')) == 7:
+                                if item.split('|')[3] == 'https' and ('cze' in item.split('|')[-2].lower()):
+                                    proxies_https.add(
+                                            ':'.join([str(item.split('|')[1]), str(item.split('|')[2])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    pass
+
+            # FOR HTTP PROXIES
+            if required_http_len > 0:
+
+                # https://www.proxy-list.download/api/v0/get?l=en&t=https
+                try:
+                    proxy_json = json.loads(requests.get('https://www.proxy-list.download/api/v0/get?l=en&t=http', timeout = 5).text)
+                    for proxy_item in proxy_json[0]['LISTA']:
+                        if proxy_item['ISO'].lower() == country_code.lower():
+                            try:
+                                proxies_http.add(
+                                    ':'.join([proxy_item['IP'],proxy_item['PORT']])
+                                )
+                            except Exception as e:
+                                pass
+                except:
+                    pass
+
+                # 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list',
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTP[4])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            item = eval(item)
+                            if item['type'] == 'http' and item['country'].lower() == country_code.lower():
+                                proxies_http.add(
+                                        ':'.join([str(item['host']), str(item['port'])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    pass
+                   
+                # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTP[5])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            if len(item.split('|')) == 7:
+                                if item.split('|')[3] == 'http' and ('cze' in item.split('|')[-2].lower()):
+                                    proxies_http.add(
+                                            ':'.join([str(item.split('|')[1]), str(item.split('|')[2])])
+                                    )
+                        except:
+                            pass
+                except:
+                    pass                
+        ################################################ FOR NL PROXIES    
+        
+        ################################################ FOR NL PROXIES
+        if country_code == "IN":
+            COMBINED_COUNTRY_URL_HTTP = constant.COMBINED_COUNTRY_URL_HTTP
+            COMBINED_COUNTRY_URL_HTTPS = constant.COMBINED_COUNTRY_URL_HTTPS
+
+            ############ COMBINED
+            # http://pubproxy.com/api/proxy
+            try:
+                pool = ThreadPool(100)
+                url_to_request = ['http://pubproxy.com/api/proxy?country=IN' for i in range(required_http_len * 5)]
+                results = pool.map(get_farzi_proxies, url_to_request)
+                pool.close()
+                pool.join()
+                for proxy in results:
+                    try:    
+                        # data = json.loads(proxy.text)
+                        # ip = ':'.join([data['data'][0]['ip'], data['data'][0]['port']])
+                        proxies_http.add(proxy)
+                        proxies_https.add(proxy)
+                    except Exception as e:
+                        pass
+            except:
+                pass
+
+            # https://proxy11.com/api/demoweb/proxy.json
+            try:
+                response = requests.get('https://proxy11.com/api/demoweb/proxy.json')
+                data = json.loads(response.text)
+                for proxy_info in data['data']:
+                    if proxy_info['country_code'] == country_code.lower():
+                        proxies_http.add(
+                            ':'.join([proxy_info['ip'], proxy_info['port']])
+                        )
+                        proxies_https.add(
+                            ':'.join([proxy_info['ip'], proxy_info['port']])
+                        )
+            except:
+                pass
+                # pass
+            ############ COMBINED
+
+            # FOR HTTPS PROXIES
+            if required_https_len > 0:
+
+                # https://www.proxy-list.download/api/v0/get?l=en&t=https
+                try:
+                    proxy_json = json.loads(requests.get('https://www.proxy-list.download/api/v0/get?l=en&t=https', timeout = 5).text)
+                    for proxy_item in proxy_json[0]['LISTA']:
+                        try:
+                            if proxy_item['ISO'].lower() == country_code.lower():
+                                proxies_https.add(
+                                    ':'.join([proxy_item['IP'],proxy_item['PORT']])
+                                )
+                        except Exception as e:
+                            pass
+                except:
+                    pass
+
+                # 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list',
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTPS[4])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            item = eval(item)
+                            if item['type'] == 'https' and item['country'].lower() == country_code.lower():
+                                proxies_https.add(
+                                        ':'.join([str(item['host']), str(item['port'])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    pass
+
+                # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTPS[5])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            if len(item.split('|')) == 7:
+                                if item.split('|')[3] == 'https' and ('india' in item.split('|')[-2].lower()):
+                                    proxies_https.add(
+                                            ':'.join([str(item.split('|')[1]), str(item.split('|')[2])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    pass
+
+            # FOR HTTP PROXIES
+            if required_http_len > 0:
+
+                # https://www.proxy-list.download/api/v0/get?l=en&t=https
+                try:
+                    proxy_json = json.loads(requests.get('https://www.proxy-list.download/api/v0/get?l=en&t=http', timeout = 5).text)
+                    for proxy_item in proxy_json[0]['LISTA']:
+                        if proxy_item['ISO'].lower() == country_code.lower():
+                            try:
+                                proxies_http.add(
+                                    ':'.join([proxy_item['IP'],proxy_item['PORT']])
+                                )
+                            except Exception as e:
+                                pass
+                except:
+                    pass
+
+                # 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list',
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTP[4])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            item = eval(item)
+                            if item['type'] == 'http' and item['country'].lower() == country_code.lower():
+                                proxies_http.add(
+                                        ':'.join([str(item['host']), str(item['port'])])
+                                    )
+                        except:
+                            pass
+                except Exception as e:
+                    pass
+                   
+                # 'https://raw.githubusercontent.com/dxxzst/free-proxy-list/master/README.md'
+                try:
+                    response = requests.get(COMBINED_COUNTRY_URL_HTTP[5])
+                    parser = response.text.split('\n')
+                    for item in parser:
+                        try:
+                            if len(item.split('|')) == 7:
+                                if item.split('|')[3] == 'http' and ('india' in item.split('|')[-2].lower()):
+                                    proxies_http.add(
+                                            ':'.join([str(item.split('|')[1]), str(item.split('|')[2])])
+                                    )
+                        except:
+                            pass
+                except:
+                    pass                
+        ################################################ FOR NL PROXIES    
+
         return proxies_http, proxies_https

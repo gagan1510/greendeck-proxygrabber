@@ -11,7 +11,7 @@ https://pypi.org/project/greendeck-proxygrabber/
 ---
 **WHATS NEW?**
 
-Added proxy grabbing support of 4 regions to proxy service, proxy grabber and proxy scraper.
+Added proxy grabbing support of 4 new regions to proxy service, proxy grabber and proxy scraper.
 
 ---
 
@@ -41,7 +41,7 @@ This creates a service object.
 ##### Args
 
 * update_time = Time after which proxies will be updated (in seconds)
-* pool_limit = Limit after which insertion will change to updation
+* pool_limit = Limit after which insertion will change to updating
 * update_count = Number of proxies to request grabber at a time
 * database_name = Mongo Database name to store proxies in
 * collection_name_http = Collection name to store http proxies in
@@ -54,6 +54,9 @@ List of supported regions is:
 * Germany: DE
 * Great Britain: GB
 * France: FR
+* Czech Republic: CZ
+* Netherlands: NL
+* India: IN
 
 #### Starting the service
 
@@ -110,6 +113,9 @@ List of supported regions is:
 * Germany: DE
 * Great Britain: GB
 * France: FR
+* Czech Republic: CZ
+* Netherlands: NL
+* India: IN
 
 #### Calling the ProxyToMongo grabber
 
